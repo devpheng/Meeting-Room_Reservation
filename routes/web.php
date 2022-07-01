@@ -29,3 +29,9 @@ Route::group(['prefix'=>'bookings','as'=>'booking.'], function(){
 });
 
 
+Route::prefix('admin')->group(function () {
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+    Route::resource('/department', App\Http\Controllers\Admin\DepartmentController::class);
+});
+

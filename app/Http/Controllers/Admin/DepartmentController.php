@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Models\Department;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class DepartmentController extends Controller
 {
@@ -14,7 +15,8 @@ class DepartmentController extends Controller
      */
     public function index()
     {
-        //
+        $departments = Department::get();
+        return view('admin.department.index', ['departments' => $departments]);
     }
 
     /**
@@ -35,7 +37,15 @@ class DepartmentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $department = Department::where('name', $request->name)->first();
+        if(!$department){
+            $department = Department::create([
+                'name' => $request->name
+            ]);
+        } else {
+            return ['message' => 'Department already exist'];
+        }
+        return ['department' => $department];
     }
 
     /**
@@ -69,7 +79,8 @@ class DepartmentController extends Controller
      */
     public function update(Request $request, Department $department)
     {
-        //
+        $department->update($request->all());
+        return ['department' => $department];
     }
 
     /**
@@ -80,6 +91,7 @@ class DepartmentController extends Controller
      */
     public function destroy(Department $department)
     {
-        //
+        $department->delete();
+        return $department;
     }
 }
