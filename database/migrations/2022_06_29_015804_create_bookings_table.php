@@ -21,6 +21,7 @@ return new class extends Migration
             $table->timestamp('time_out')->nullable();
             $table->string('booker');
             $table->integer('department_id');
+            $table->integer('employees_id');
             $table->integer('room_id');
             $table->timestamps();
         });

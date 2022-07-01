@@ -12,6 +12,30 @@ class BookingController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function list()
+    {
+        return view("booking.lists");
+    }
+
+    public function search(Request $request)
+    {
+        $getDate = $request->query('date');
+        $getTimeIn = $request->query('time_in');
+        $getTimeOut = $request->query('time_out');
+        $getBooking = Booking::where("time_in", ">=", $getDate." ".$getTimeIn.":00")->where("time_out", "<=", $getDate." ".$getTimeOut.":00")->get();
+        return view("home", [
+            'date' => $getDate,
+            'setTimeIn' => $getTimeIn,
+            'setTimeOut' => $getTimeOut
+        ]);
+    }
+
+
+     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
         //
@@ -35,7 +59,21 @@ class BookingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $booking = new Booking();
+            $booking->ip = 0;
+            $booking->perpose = $request->perpose;
+            $booking->time_in = $request->timeIn;
+            $booking->time_out = $request->timeOut;
+            $booking->booker = $request->booker;
+            $booking->department_id = $request->department;
+            $booking->employees_id = 0;
+            $booking->room_id = $request->room_id;
+            $booking->save();
+            return response()->json(array('msg'=> "Booking Success"), 200);
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
     }
 
     /**
