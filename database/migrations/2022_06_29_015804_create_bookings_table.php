@@ -15,14 +15,14 @@ return new class extends Migration
     {
         Schema::create('bookings', function (Blueprint $table) {
             $table->id();
-            $table->string('ip');
-            $table->string('perpose');
+            $table->string('mac_adress');
+            $table->string('purpose');
             $table->timestamp('time_in')->nullable();
             $table->timestamp('time_out')->nullable();
             $table->string('booker');
             $table->integer('department_id');
-            $table->integer('employees_id');
             $table->integer('room_id');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

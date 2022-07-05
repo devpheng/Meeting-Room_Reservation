@@ -4,18 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Booking;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class BookingController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function list()
-    {
-        return view("booking.lists");
-    }
 
     public function search(Request $request)
     {
@@ -30,27 +22,6 @@ class BookingController extends Controller
         ]);
     }
 
-
-     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -60,64 +31,60 @@ class BookingController extends Controller
     public function store(Request $request)
     {
         try {
-            $booking = new Booking();
-            $booking->ip = 0;
-            $booking->perpose = $request->perpose;
-            $booking->time_in = $request->timeIn;
-            $booking->time_out = $request->timeOut;
-            $booking->booker = $request->booker;
-            $booking->department_id = $request->department;
-            $booking->employees_id = 0;
-            $booking->room_id = $request->room_id;
-            $booking->save();
-            return response()->json(array('msg'=> "Booking Success"), 200);
+            $macAddr = substr(exec('getmac'), 0, 17);
+            $setTimeIn = $request->timeIn;
+            $setTimeOut = $request->timeOut;
+            $currentDateTime = Carbon::now();
+            $checkTimeInTimeOut = Carbon::parse($setTimeOut)->lt($setTimeIn);
+            $checkBookingTime = Carbon::parse($setTimeOut)->lt($currentDateTime);
+            if($checkTimeInTimeOut || $checkBookingTime){
+                return response()->json(array(
+                    'status' => 'error',
+                    'msg'=> "Please check Time In or Time Out!"), 
+                200);
+            }
+
+            $checkBooking =  Booking::where("room_id", $request->room_id)
+                    ->where(function($query) use ($setTimeIn, $setTimeOut){
+                        $query->where("time_in", "<", $setTimeOut)
+                            ->where("time_out", ">", $setTimeIn);
+                        })
+                    ->exists();
+            if($checkBooking){
+                return response()->json(array(
+                    'status' => 'error',
+                    'msg'=> "This room is already booked!"), 
+                200);
+            }else{
+                $booking = new Booking();
+                $booking->mac_adress = $macAddr;
+                $booking->purpose = $request->purpose;
+                $booking->time_in = $request->timeIn;
+                $booking->time_out = $request->timeOut;
+                $booking->booker = $request->booker;
+                $booking->department_id = $request->department;
+                $booking->room_id = $request->room_id;
+                $booking->save();
+                return response()->json(array(
+                    'status' => 'success',
+                    'msg'=> "Booking Success")
+                , 200);
+            }
         } catch (\Exception $e) {
             return $e->getMessage();
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Booking  $booking
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Booking $booking)
+    public function delete(Request $request)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Booking  $booking
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Booking $booking)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Booking  $booking
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Booking $booking)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Booking  $booking
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Booking $booking)
-    {
-        //
+        try {
+            $bookingId = $request->id;
+            $macAddr = substr(exec('getmac'), 0, 17);
+            $booking = Booking::where('id', $bookingId)->where('mac_adress', $macAddr)->first();
+            $booking->delete();
+            return redirect()->back()->with('message-cancel','Booking was canceled Successful!');
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
     }
 }

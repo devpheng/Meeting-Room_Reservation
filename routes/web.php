@@ -22,16 +22,15 @@ use App\Http\Controllers\BookingController;
 Auth::routes();
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/lists', [HomeController::class, 'lists'])->name('lists');
 Route::group(['prefix'=>'bookings','as'=>'booking.'], function(){
     Route::get('/search', [BookingController::class, 'search'])->name('search');
-    Route::get('/list', [BookingController::class, 'list'])->name('list');
     Route::post('/store', [BookingController::class, 'store'])->name('store');
+    Route::delete('/delete', [BookingController::class, 'delete'])->name('delete');
 });
 
 
 Route::prefix('admin')->group(function () {
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
     Route::resource('/department', App\Http\Controllers\Admin\DepartmentController::class);
 });
 

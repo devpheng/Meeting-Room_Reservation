@@ -20,6 +20,7 @@ class RoomSeeder extends Seeder
             "Meeting Room 2",
             "Meeting Room 5",
             "Meeting Room 6",
+            "Training Room",
             "conference Room",
         ];
         foreach($rooms as $key => $room){
