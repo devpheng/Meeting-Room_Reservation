@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\RoomController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,11 +23,16 @@ use App\Http\Controllers\BookingController;
 Auth::routes();
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/lists', [HomeController::class, 'lists'])->name('lists');
+
+
 Route::group(['prefix'=>'bookings','as'=>'booking.'], function(){
-    Route::get('/search', [BookingController::class, 'search'])->name('search');
-    Route::post('/store', [BookingController::class, 'store'])->name('store');
-    Route::delete('/delete', [BookingController::class, 'delete'])->name('delete');
+    Route::group(['prefix'=>'room','as'=>'room.'], function(){
+        Route::get('/', [RoomController::class, 'index'])->name('index');
+        Route::get('/search', [BookingController::class, 'search'])->name('search');
+        Route::post('/store', [BookingController::class, 'store'])->name('store');
+        Route::delete('/delete', [BookingController::class, 'delete'])->name('delete');
+        
+    });
 });
 
 
