@@ -18,13 +18,31 @@
 
         <style>
             body {
+                background: #f1f2f7;
                 font-family: 'Nunito', sans-serif;
             }
+            .card{
+                box-shadow: none;
+                border: 1px solid rgba(0,0,0,.125);
+                margin-bottom: 10px;
+            }
+
+
             .card-border{
                 box-shadow: none;
-                border:1px solid #ccc;
+                border:1px solid #fff;
                 border-radius: 0;
                 height: 100%!important;
+            }
+            .no-card-border{
+                height: 100%!important;
+                box-shadow: none;
+                border-radius: 0;
+                border: 0;
+            }
+
+            .no-card-border .card-body{
+                background-color: none;
             }
             .card-border .card-body{
                 padding: 10px;
@@ -85,6 +103,43 @@
             #ignismyModal .modal-header{
                 border:0px;
             }
+
+            .bd-pink-wrap{
+                border: 2px solid #f37fa9;
+                margin: 20px;
+                border-radius: 10px;
+            }
+
+            .block-filter .main-top-bg{
+                background: rgb(243,127,169);
+                background: linear-gradient(90deg, rgba(243,127,169,1) 0%, rgba(153,97,243,1) 100%);
+            }
+            .block-filter label{
+                color: #fff;
+                font-weight: 700;
+            }
+            .block-filter .btn-search{
+                background: rgb(243,127,169);
+                border: 0px solid #fff;
+                border-radius: 50px;
+                box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
+            }
+
+            .block-filter .btn-search i{
+                color: #fff;
+            }
+            .block-book .head-title{
+                background: #f37fa9; /* fallback for old browsers */
+                background: -webkit-linear-gradient(to right, #f37fa9, #9961f3); /* Chrome 10-25, Safari 5.1-6 */
+                background: linear-gradient(to right, #f37fa9, #9961f3); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+                -webkit-background-clip: text;
+                background-clip: text;
+                color: transparent;
+                font-weight: 600;
+            }
+            .card-border .card-body-bg-danger{
+                background-color:#f0675d;
+            }
             /*--thank you pop ends here--*/
         </style>
     </head>
@@ -93,23 +148,23 @@
         <div class="content">
             <!-- Animated -->
             <div class="animated fadeIn">
-                <div class="row justify-content">
+                <div class="row justify-content block-filter">
                     <div class="col-lg-12">
-                        <div class="card">
+                        <div class="card main-top-bg">
                             <div class="card-body">
                                 <input type="hidden" value="{{ route('booking.room.store') }}" id="url-store"/>
                                 <form name="add-blog-post-form" id="add-blog-post-form" method="get" action="{{ route('booking.room.index')}}">
                                     <input type="hidden" name="search" value="true" />
                                     <div class="row form-group justify-content-center">
                                         <div class="col-12 col-xl-3 py-3">
-                                            <label>Date : </label>
+                                            <label>Date </label>
                                             <div class="input-group">
                                                 <div class="input-group-addon"><i class="fa fa-calendar-days"></i></div>
                                                 <input type="text" name="date" class="form-control" data-field="date" id="date-booking" value="{{ $date }}">
                                             </div>
                                         </div>
                                         <div class="col-6 col-xl-2 col-sm-6 py-3">
-                                            <label>Time In : </label>
+                                            <label>Time In </label>
                                             <select name="time_in" id="time_in_select" class="form-control">
                                                 @foreach (Config::get('times') as $index => $value)
                                                     @if(!$loop->last)
@@ -119,7 +174,7 @@
                                             </select>
                                         </div>
                                         <div class="col-6 col-xl-2 col-sm-6 py-3">
-                                            <label>Time Out : </label>
+                                            <label>Time Out </label>
                                             <select name="time_out" id="time_out_select" class="form-control">
                                                 @foreach (Config::get('times') as $index => $value)
                                                     @if(!$loop->first)
@@ -130,7 +185,7 @@
                                         </div>
                                         <div class="col-12 col-xl-1 py-3">
                                             <label> Filter Rooms</label>
-                                            <button type="submit" class="btn btn-primary btn-sm form-control"><i class="fa-solid fa-magnifying-glass"></i>&nbsp; </button>
+                                            <button type="submit" class="btn btn-primary btn-search btn-sm form-control"><i class="fa-solid fa-magnifying-glass"></i>&nbsp; </button>
                                         </div>
                                     </div>
                                 </form>
@@ -139,14 +194,70 @@
                     </div>
                 </div>
                 <!--  Room  -->
-                <div class="row">
+                <div class="row block-book">
                     <div class="col-lg-12">
                         <div class="card">
-                            <div class="row justify-content-center">
-                                <div class="col-lg-10 col-md-12">
+                            <h2 class="text-sm-center mt-3 head-title"> MAP LAYOUT</h2>
+                            <div class="row">
+                                <div class="col-2">
+                                    <div class="compass p-4">
+                                        <img src="{{ asset('/images/compass.png') }}" width="200px"/>
+                                    </div>
+                                </div>
+                                <div class="col-8 bd-pink-wrap">
                                     <div class="card-body">
                                         <div class="row">
-                                            <div class="col-7 mb-4 pr-0">
+                                             <div class="col-4">
+                                                <div class="card card-border">
+                                                    <x-room-button type="button" :checkFinished="$checkFinished" :getRooms="$getRooms[1]" :getBookingRoom="$getBookingRoom[1]" :getMeetingRoom="$getMeetingRoom[1]" :setTimeIn="$setTimeIn" :setTimeOut="$setTimeOut" :macAddr="$macAddr" :checkMeetingFinished="$checkMeetingFinished[1]"/>
+                                                </div>
+                                            </div>    
+                                            <div class="col-8">
+                                               
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-1 mb-4 p-0">
+                                               
+                                            </div>
+                                            <div class="col-2 mb-4">
+                                                <div class="card no-card-border">
+                                                    <div class="card-body d-flex justify-content-center align-items-center">
+                                                        <div class="mx-auto d-block">
+                                                            <h3 class="text-center"> <i class="fa-solid fa-door-open"></i></h3>
+                                                            <h5 class="text-sm-center mt-2 mb-1"> Entrance</h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> 
+                                            <div class="col-2 mb-4">
+                                                
+                                            </div>
+                                            <div class="col-3 mb-4 p-0">
+                                                <div class="card card-border m-0">
+                                                    <x-room-button type="button" :checkFinished="$checkFinished" :getRooms="$getRooms[2]" :getBookingRoom="$getBookingRoom[2]" :getMeetingRoom="$getMeetingRoom[2]" :setTimeIn="$setTimeIn" :setTimeOut="$setTimeOut" :macAddr="$macAddr" :checkMeetingFinished="$checkMeetingFinished[2]"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-4 mb-4 pl-0">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="card card-border m-0">
+                                                            <x-room-button type="button" :checkFinished="$checkFinished" :getRooms="$getRooms[3]" :getBookingRoom="$getBookingRoom[3]" :getMeetingRoom="$getMeetingRoom[3]" :setTimeIn="$setTimeIn" :setTimeOut="$setTimeOut" :macAddr="$macAddr" :checkMeetingFinished="$checkMeetingFinished[3]"/>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <div class="card card-border">
+                                                            <x-room-button type="button" :checkFinished="$checkFinished" :getRooms="$getRooms[4]" :getBookingRoom="$getBookingRoom[4]" :getMeetingRoom="$getMeetingRoom[4]" :setTimeIn="$setTimeIn" :setTimeOut="$setTimeOut" :macAddr="$macAddr" :checkMeetingFinished="$checkMeetingFinished[4]"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-3 mb-4 pr-0">
+                                                <div class="card card-border">
+                                                    <x-room-button type="button" :checkFinished="$checkFinished" :getRooms="$getRooms[5]" :getBookingRoom="$getBookingRoom[5]" :getMeetingRoom="$getMeetingRoom[5]" :setTimeIn="$setTimeIn" :setTimeOut="$setTimeOut" :macAddr="$macAddr" :checkMeetingFinished="$checkMeetingFinished[5]"/>
+                                                </div>
                                             </div>
                                             <div class="col-2 mb-4 p-0">
                                                 <div class="card card-border">
@@ -158,232 +269,12 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-3 mb-4 pl-0">
-                                                <div class="card card-border">
-                                                    <div class="card-body d-flex justify-content-center align-items-center">
-                                                        @if(isset($getRooms[1]) && $getRooms[1])
-                                                        <div class="mx-auto d-block">
-                                                            <h5 class="text-sm-center mt-2 mb-1"><b>{{ $getRooms[1]['name'] }} </b></h5>
-                                                            @if($checkFinished && isset($getBookingRoom[1]) && $getBookingRoom[1] && $getBookingRoom[1] !== null)
-                                                                <div class="location text-sm-center p-1"><i class="fa-solid fa-users-slash"></i> Meeting Finished, {{ $getBookingRoom[1]->department->name }} ( {{ $getBookingRoom[1]->time_in->format('H:i') }} - {{ $getBookingRoom[1]->time_out->format('H:i') }} )</div>
-                                                                <div class="d-btn p-1 d-flex justify-content-center align-items-center">
-                                                                    <button type="button" class="btn btn-success  btn-sm mr-2" data-toggle="modal" data-target="#lists-room-modal-{{ $getRooms[1]['id'] }}">List</button>
-                                                                </div>
-                                                            @elseif($checkFinished)
-                                                                <div class="location text-sm-center p-1"><i class="fa-solid fa-file-circle-xmark"></i> Can't book</div>
-                                                                <div class="d-btn p-1 d-flex justify-content-center align-items-center">
-                                                                    <button type="button" class="btn btn-success  btn-sm mr-2" data-toggle="modal" data-target="#lists-room-modal-{{ $getRooms[1]['id'] }}">List</button>
-                                                                </div>
-                                                            @elseif(isset($getMeetingRoom[1]) && $getMeetingRoom[1] && $getMeetingRoom[1] !== null)
-                                                                <div class="location text-sm-center p-1"><i class="fa-solid fa-users"></i> Meeting, {{ $getMeetingRoom[1]->department->name }} ( {{ $getMeetingRoom[1]->time_in->format('H:i') }} - {{ $getMeetingRoom[1]->time_out->format('H:i') }} )</div>
-                                                                <div class="d-btn p-1 d-flex justify-content-center align-items-center">
-                                                                    <button type="button" class="btn btn-success  btn-sm mr-2" data-toggle="modal" data-target="#lists-room-modal-{{ $getRooms[1]['id'] }}">List</button>
-                                                                </div>
-                                                            @elseif(isset($getBookingRoom[1]) && $getBookingRoom[1] && $getBookingRoom[1] !== null)
-                                                                <div class="location text-sm-center p-1"><i class="fa-solid fa-users-viewfinder"></i> Booked, {{ $getBookingRoom[1]->department->name }} ( {{ $getBookingRoom[1]->time_in->format('H:i') }} - {{ $getBookingRoom[1]->time_out->format('H:i') }} )</div>
-                                                                <div class="d-btn p-1 d-flex justify-content-center align-items-center">
-                                                                    <button type="button" class="btn btn-success btn-sm mr-2" data-toggle="modal" data-target="#lists-room-modal-{{ $getRooms[1]['id'] }}">List</button>
-                                                                    @if($macAddr == $getBookingRoom[1]->mac_adress)
-                                                                        <button type="button" class="btn btn-danger btn-sm btn-cancel-booking" data-id="{{ $getBookingRoom[1]->id }}" data-value="{{ $getRooms[1]['name'] }} ({{ $getBookingRoom[1]->time_in->format('d-m-Y') }} {{ $getBookingRoom[1]->time_in->format('H:i') }} - {{ $getBookingRoom[1]->time_out->format('H:i') }})" data-toggle="modal" data-target="#cancel-booking-modal" data-backdrop="static" data-keyboard="false">Cancel</button>
-                                                                    @endif
-                                                                </div>
-                                                            @else
-                                                                <div class="location text-sm-center p-1"><i class="fa-solid fa-file-circle-check"></i> Available ( {{ $setTimeIn }} - {{ $setTimeOut }} )</div>
-                                                                <div class="d-btn p-1 d-flex justify-content-center align-items-center">
-                                                                    <button type="button" class="btn btn-success  btn-sm mr-2" data-toggle="modal" data-target="#lists-room-modal-{{ $getRooms[1]['id'] }}">List</button>
-                                                                    <button type="button" class="btn btn-primary btn-sm mr-2 book-modal" data-toggle="modal" data-target="#booking-modal" data-id="{{ $getRooms[1]['id'] }}" data-value="{{ $getRooms[1]['name'] }}">Book</button>
-                                                                </div>
-                                                            @endif
-                                                        </div>
-                                                        @endif
-                                                    </div>
-                                                </div>
-                                            </div>    
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-4 mb-4 pr-0">
-                                                <div class="row">
-                                                    <div class="col-12">
-                                                        <div class="card card-border m-0">
-                                                            <div class="card-body d-flex justify-content-center align-items-center">
-                                                            @if(isset($getRooms[2]) && $getRooms[2])
-                                                                <div class="mx-auto d-block">
-                                                                    <h5 class="text-sm-center mt-2 mb-1"><b>{{ $getRooms[2]['name'] }}</b></h5>
-                                                                    @if($checkFinished && isset($getBookingRoom[2]) && $getBookingRoom[2] && $getBookingRoom[2] !== null)
-                                                                        <div class="location text-sm-center p-1"><i class="fa-solid fa-users-slash"></i> Meeting Finished, {{ $getBookingRoom[2]->department->name }}  ( {{ $getBookingRoom[2]->time_in->format('H:i') }} - {{ $getBookingRoom[2]->time_out->format('H:i') }} )</div>
-                                                                        <div class="d-btn p-1 d-flex justify-content-center align-items-center">
-                                                                            <button type="button" class="btn btn-success  btn-sm mr-2" data-toggle="modal" data-target="#lists-room-modal-{{ $getRooms[2]['id'] }}">List</button>
-                                                                        </div>
-                                                                    @elseif($checkFinished)
-                                                                        <div class="location text-sm-center p-1"><i class="fa-solid fa-file-circle-xmark"></i> Can't book  ( Time has passed )</div>
-                                                                        <div class="d-btn p-1 d-flex justify-content-center align-items-center">
-                                                                            <button type="button" class="btn btn-success  btn-sm mr-2" data-toggle="modal" data-target="#lists-room-modal-{{ $getRooms[2]['id'] }}">List</button>
-                                                                        </div>
-                                                                    @elseif(isset($getMeetingRoom[2]) && $getMeetingRoom[2] && $getMeetingRoom[2] !== null)
-                                                                        <div class="location text-sm-center p-1"><i class="fa-solid fa-users"></i> Meeting, {{ $getMeetingRoom[2]->department->name }}  ( {{ $getBookingRoom[2]->time_in->format('H:i') }} - {{ $getBookingRoom[2]->time_out->format('H:i') }} )</div>
-                                                                        <div class="d-btn p-1 d-flex justify-content-center align-items-center">
-                                                                            <button type="button" class="btn btn-success  btn-sm mr-2" data-toggle="modal" data-target="#lists-room-modal-{{ $getRooms[2]['id'] }}">List</button>
-                                                                        </div>
-                                                                    @elseif(isset($getBookingRoom[2]) && $getBookingRoom[2] && $getBookingRoom[2] !== null)
-                                                                        <div class="location text-sm-center p-1"><i class="fa-solid fa-users-viewfinder"></i> Booked, {{ $getBookingRoom[2]->department->name }}  ( {{ $getBookingRoom[2]->time_in->format('H:i') }} - {{ $getBookingRoom[2]->time_out->format('H:i') }} )</div>
-                                                                        <div class="d-btn p-1 d-flex justify-content-center align-items-center">
-                                                                            <button type="button" class="btn btn-success  btn-sm mr-2" data-toggle="modal" data-target="#lists-room-modal-{{ $getRooms[2]['id'] }}">List</button>
-                                                                            @if($macAddr == $getBookingRoom[2]->mac_adress)
-                                                                                <button type="button" class="btn btn-danger btn-sm btn-cancel-booking" data-id="{{ $getBookingRoom[2]->id }}" data-value="{{ $getRooms[2]['name'] }} ({{ $getBookingRoom[2]->time_in->format('d-m-Y') }} {{ $getBookingRoom[2]->time_in->format('H:i') }} - {{ $getBookingRoom[2]->time_out->format('H:i') }})" data-toggle="modal" data-target="#cancel-booking-modal" data-backdrop="static" data-keyboard="false">Cancel</button>
-                                                                            @endif
-                                                                        </div>
-                                                                    @else
-                                                                        <div class="location text-sm-center p-1"><i class="fa-solid fa-file-circle-check"></i> Available  ( {{ $setTimeIn }} - {{ $setTimeOut }} )</div>
-                                                                        <div class="d-btn p-1 d-flex justify-content-center align-items-center">
-                                                                            <button type="button" class="btn btn-success  btn-sm mr-2" data-toggle="modal" data-target="#lists-room-modal-{{ $getRooms[2]['id'] }}">List</button>
-                                                                            <button type="button" class="btn btn-primary btn-sm mr-2 book-modal" data-toggle="modal" data-target="#booking-modal" data-id="{{ $getRooms[2]['id'] }}" data-value="{{ $getRooms[2]['name'] }}">Book</button>
-                                                                        </div>
-                                                                    @endif
-                                                                </div>
-                                                            @endif
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <div class="card card-border">
-                                                            <div class="card-body d-flex justify-content-center align-items-center">
-                                                             @if(isset($getRooms[3]) && $getRooms[3])
-                                                                <div class="mx-auto d-block">
-                                                                    <h5 class="text-sm-center mt-2 mb-1"><b>{{ $getRooms[3]['name'] }}</b></h5>
-                                                                    @if($checkFinished && isset($getBookingRoom[3]) && $getBookingRoom[3] && $getBookingRoom[3] !== null)
-                                                                        <div class="location text-sm-center p-1"><i class="fa-solid fa-users-slash"></i> Meeting Finished, {{ $getBookingRoom[3]->department->name }} ( {{ $getBookingRoom[3]->time_in->format('H:i') }} - {{ $getBookingRoom[3]->time_out->format('H:i') }} )</div>
-                                                                        <div class="d-btn p-1 d-flex justify-content-center align-items-center">
-                                                                            <button type="button" class="btn btn-success  btn-sm mr-2" data-toggle="modal" data-target="#lists-room-modal-{{ $getRooms[3]['id'] }}">List</button>
-                                                                        </div>
-                                                                    @elseif($checkFinished)
-                                                                        <div class="location text-sm-center p-1"><i class="fa-solid fa-file-circle-xmark"></i> Can't book  ( Time has passed )</div>
-                                                                        <div class="d-btn p-1 d-flex justify-content-center align-items-center">
-                                                                            <button type="button" class="btn btn-success  btn-sm mr-2" data-toggle="modal" data-target="#lists-room-modal-{{ $getRooms[3]['id'] }}">List</button>
-                                                                        </div>
-                                                                    @elseif(isset($getMeetingRoom[3]) && $getMeetingRoom[3] && $getMeetingRoom[3] !== null)
-                                                                        <div class="location text-sm-center p-1"><i class="fa-solid fa-users"></i> Meeting, {{ $getMeetingRoom[3]->department->name }} ( {{ $getMeetingRoom[3]->time_in->format('H:i') }} - {{ $getMeetingRoom[3]->time_out->format('H:i') }} )</div>
-                                                                        <div class="d-btn p-1 d-flex justify-content-center align-items-center">
-                                                                            <button type="button" class="btn btn-success  btn-sm mr-2" data-toggle="modal" data-target="#lists-room-modal-{{ $getRooms[3]['id'] }}">List</button>
-                                                                        </div>
-                                                                    @elseif(isset($getBookingRoom[3]) && $getBookingRoom[3] && $getBookingRoom[3] !== null)
-                                                                        <div class="location text-sm-center p-1"><i class="fa-solid fa-users-viewfinder"></i> Booked, {{ $getBookingRoom[3]->department->name }} ( {{ $getBookingRoom[3]->time_in->format('H:i') }} - {{ $getBookingRoom[3]->time_out->format('H:i') }} )</div>
-                                                                        <div class="d-btn p-1 d-flex justify-content-center align-items-center">
-                                                                            <button type="button" class="btn btn-success  btn-sm mr-2" data-toggle="modal" data-target="#lists-room-modal-{{ $getRooms[3]['id'] }}">List</button>
-                                                                            @if($macAddr == $getBookingRoom[3]->mac_adress)
-                                                                                <button type="button" class="btn btn-danger btn-sm btn-cancel-booking" data-id="{{ $getBookingRoom[3]->id }}" data-value="{{ $getRooms[3]['name'] }} ({{ $getBookingRoom[3]->time_in->format('d-m-Y') }} {{ $getBookingRoom[3]->time_in->format('H:i') }} - {{ $getBookingRoom[3]->time_out->format('H:i') }})" data-toggle="modal" data-target="#cancel-booking-modal" data-backdrop="static" data-keyboard="false">Cancel</button>
-                                                                            @endif
-                                                                        </div>
-                                                                    @else
-                                                                        <div class="location text-sm-center p-1"><i class="fa-solid fa-file-circle-check"></i> Available ( {{ $setTimeIn }} - {{ $setTimeOut }} )</div>
-                                                                        <div class="d-btn p-1 d-flex justify-content-center align-items-center">
-                                                                            <button type="button" class="btn btn-success  btn-sm mr-2" data-toggle="modal" data-target="#lists-room-modal-{{ $getRooms[3]['id'] }}">List</button>
-                                                                            <button type="button" class="btn btn-primary btn-sm mr-2 book-modal" data-toggle="modal" data-target="#booking-modal" data-id="{{ $getRooms[3]['id'] }}" data-value="{{ $getRooms[3]['name'] }}">Book</button>
-                                                                        </div>
-                                                                    @endif
-                                                                </div>
-                                                            @endif
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-3 mb-4 p-0">
-                                                <div class="card card-border m-0">
-                                                    <div class="card-body d-flex justify-content-center align-items-center">
-                                                        @if(isset($getRooms[4]) && $getRooms[4])
-                                                                <div class="mx-auto d-block">
-                                                                    <h5 class="text-sm-center mt-2 mb-1"><b>{{ $getRooms[4]['name'] }}</b></h5>
-                                                                    @if($checkFinished && isset($getBookingRoom[4]) && $getBookingRoom[4] && $getBookingRoom[4] !== null)
-                                                                        <div class="location text-sm-center p-1"><i class="fa-solid fa-users-slash"></i> Meeting Finished, {{ $getBookingRoom[4]->department->name }} ( {{ $getBookingRoom[4]->time_in->format('H:i') }} - {{ $getBookingRoom[4]->time_out->format('H:i') }} )</div>
-                                                                        <div class="d-btn p-1 d-flex justify-content-center align-items-center">
-                                                                            <button type="button" class="btn btn-success  btn-sm mr-2" data-toggle="modal" data-target="#lists-room-modal-{{ $getRooms[4]['id'] }}">List</button>
-                                                                        </div>
-                                                                    @elseif($checkFinished)
-                                                                        <div class="location text-sm-center p-1"><i class="fa-solid fa-file-circle-xmark"></i> Can't book  ( Time has passed )</div>
-                                                                        <div class="d-btn p-1 d-flex justify-content-center align-items-center">
-                                                                            <button type="button" class="btn btn-success  btn-sm mr-2" data-toggle="modal" data-target="#lists-room-modal-{{ $getRooms[4]['id'] }}">List</button>
-                                                                        </div>
-                                                                    @elseif(isset($getMeetingRoom[4]) && $getMeetingRoom[4] && $getMeetingRoom[4] !== null)
-                                                                        <div class="location text-sm-center p-1"><i class="fa-solid fa-users"></i> Meeting, {{ $getMeetingRoom[4]->department->name }} ( {{ $getMeetingRoom[4]->time_in->format('H:i') }} - {{ $getMeetingRoom[4]->time_out->format('H:i') }} )</div>
-                                                                        <div class="d-btn p-1 d-flex justify-content-center align-items-center">
-                                                                            <button type="button" class="btn btn-success  btn-sm mr-2" data-toggle="modal" data-target="#lists-room-modal-{{ $getRooms[4]['id'] }}">List</button>
-                                                                        </div>
-                                                                    @elseif(isset($getBookingRoom[4]) && $getBookingRoom[4] && $getBookingRoom[4] !== null)
-                                                                        <div class="location text-sm-center p-1"><i class="fa-solid fa-users-viewfinder"></i> Booked, {{ $getBookingRoom[4]->department->name }} ( {{ $getBookingRoom[4]->time_in->format('H:i') }} - {{ $getBookingRoom[4]->time_out->format('H:i') }} )</div>
-                                                                        <div class="d-btn p-1 d-flex justify-content-center align-items-center">
-                                                                            <button type="button" class="btn btn-success  btn-sm mr-2" data-toggle="modal" data-target="#lists-room-modal-{{ $getRooms[4]['id'] }}">List</button>
-                                                                            @if($macAddr == $getBookingRoom[4]->mac_adress)
-                                                                                <button type="button" class="btn btn-danger btn-sm btn-cancel-booking" data-id="{{ $getBookingRoom[4]->id }}" data-value="{{ $getRooms[4]['name'] }} ({{ $getBookingRoom[4]->time_in->format('d-m-Y') }} {{ $getBookingRoom[4]->time_in->format('H:i') }} - {{ $getBookingRoom[4]->time_out->format('H:i') }})" data-toggle="modal" data-target="#cancel-booking-modal" data-backdrop="static" data-keyboard="false">Cancel</button>
-                                                                            @endif
-                                                                        </div>
-                                                                    @else
-                                                                        <div class="location text-sm-center p-1"><i class="fa-solid fa-file-circle-check"></i> Available ( {{ $setTimeIn }} - {{ $setTimeOut }} )</div>
-                                                                        <div class="d-btn p-1 d-flex justify-content-center align-items-center">
-                                                                            <button type="button" class="btn btn-success  btn-sm mr-2" data-toggle="modal" data-target="#lists-room-modal-{{ $getRooms[4]['id'] }}">List</button>
-                                                                            <button type="button" class="btn btn-primary btn-sm mr-2 book-modal" data-toggle="modal" data-target="#booking-modal" data-id="{{ $getRooms[4]['id'] }}" data-value="{{ $getRooms[4]['name'] }}">Book</button>
-                                                                        </div>
-                                                                    @endif
-                                                                </div>
-                                                            @endif
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-1 mb-4 p-0">
-                                               
-                                            </div>
-                                            <div class="col-2 mb-4">
-                                               
-                                            </div> 
-                                            <div class="col-2 mb-4">
-                                                
-                                            </div>    
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-8">
-                                            </div>
-                                            <div class="col-4">
-                                                <div class="card card-border">
-                                                    <div class="card-body d-flex justify-content-center align-items-center">
-                                                    @if(isset($getRooms[5]) && $getRooms[5])
-                                                        <div class="mx-auto d-block">
-                                                            <h5 class="text-sm-center mt-2 mb-1"><b>{{ $getRooms[5]['name'] }}</b></h5>
-                                                            @if($checkFinished && isset($getBookingRoom[5]) && $getBookingRoom[5] && $getBookingRoom[5] !== null)
-                                                                <div class="location text-sm-center p-1"><i class="fa-solid fa-users-slash"></i> Meeting Finished, {{ $getBookingRoom[5]->department->name }} ( {{ $getBookingRoom[5]->time_in->format('H:i') }} - {{ $getBookingRoom[5]->time_out->format('H:i') }} )</div>
-                                                                <div class="d-btn p-1 d-flex justify-content-center align-items-center">
-                                                                    <button type="button" class="btn btn-success  btn-sm mr-2" data-toggle="modal" data-target="#lists-room-modal-{{ $getRooms[5]['id'] }}">List</button>
-                                                                </div>
-                                                            @elseif($checkFinished)
-                                                                <div class="location text-sm-center p-1"><i class="fa-solid fa-file-circle-xmark"></i> Can't book ( Time has passed )</div>
-                                                                <div class="d-btn p-1 d-flex justify-content-center align-items-center">
-                                                                    <button type="button" class="btn btn-success  btn-sm mr-2" data-toggle="modal" data-target="#lists-room-modal-{{ $getRooms[5]['id'] }}">List</button>
-                                                                </div>
-                                                            @elseif(isset($getMeetingRoom[5]) && $getMeetingRoom[5] && $getMeetingRoom[5] !== null)
-                                                                <div class="location text-sm-center p-1"><i class="fa-solid fa-users"></i> Meeting, {{ $getMeetingRoom[5]->department->name }} ( {{ $getBookingRoom[5]->time_in->format('H:i') }} - {{ $getBookingRoom[5]->time_out->format('H:i') }} )</div>
-                                                                <div class="d-btn p-1 d-flex justify-content-center align-items-center">
-                                                                    <button type="button" class="btn btn-success  btn-sm mr-2" data-toggle="modal" data-target="#lists-room-modal-{{ $getRooms[5]['id'] }}">List</button>
-                                                                </div>
-                                                            @elseif(isset($getBookingRoom[5]) && $getBookingRoom[5] && $getBookingRoom[5] !== null)
-                                                                <div class="location text-sm-center p-1"><i class="fa-solid fa-users-viewfinder"></i> Booked, {{ $getBookingRoom[5]->department->name }} ( {{ $getBookingRoom[5]->time_in->format('H:i') }} - {{ $getBookingRoom[5]->time_out->format('H:i') }} )</div>
-                                                                <div class="d-btn p-1 d-flex justify-content-center align-items-center">
-                                                                    <button type="button" class="btn btn-success  btn-sm mr-2" data-toggle="modal" data-target="#lists-room-modal-{{ $getRooms[5]['id'] }}">List</button>
-                                                                     @if($macAddr == $getBookingRoom[5]->mac_adress)
-                                                                        <button type="button" class="btn btn-danger btn-sm btn-cancel-booking" data-id="{{ $getBookingRoom[5]->id }}" data-value="{{ $getRooms[5]['name'] }} ({{ $getBookingRoom[5]->time_in->format('d-m-Y') }} {{ $getBookingRoom[5]->time_in->format('H:i') }} - {{ $getBookingRoom[5]->time_out->format('H:i') }})" data-toggle="modal" data-target="#cancel-booking-modal" data-backdrop="static" data-keyboard="false">Cancel</button>
-                                                                    @endif
-                                                                </div>
-                                                            @else
-                                                                <div class="location text-sm-center p-1"><i class="fa-solid fa-file-circle-check"></i> Available ( {{ $setTimeIn }} - {{ $setTimeOut }} )</div>
-                                                                <div class="d-btn p-1 d-flex justify-content-center align-items-center">
-                                                                    <button type="button" class="btn btn-success  btn-sm mr-2" data-toggle="modal" data-target="#lists-room-modal-{{ $getRooms[5]['id'] }}">List</button>
-                                                                    <button type="button" class="btn btn-primary btn-sm mr-2 book-modal" data-toggle="modal" data-target="#booking-modal" data-id="{{ $getRooms[5]['id'] }}" data-value="{{ $getRooms[5]['name'] }}">Book</button>
-                                                                </div>
-                                                            @endif
-                                                        </div>
-                                                    @endif
-                                                    </div>
-                                                </div>
-                                            </div>    
+                                            <div class="col-7 mb-4 pl-0">
+                                            </div>  
                                         </div>
                                     </div>
+                                </div>
+                                <div class="col-2">
                                 </div>
                             </div> <!-- /.row -->
                         </div>
@@ -413,28 +304,30 @@
                                     <label><span class="text-danger">*</span>Date : </label>
                                     <div class="input-group">
                                         <div class="input-group-addon"><i class="fa fa-calendar-days"></i></div>
-                                        <input type="text" name="date" class="form-control" data-field="date" id="select-date-booking" value="{{ $date }}" readonly>
+                                        <input type="text" name="date" class="form-control" id="select-date-booking" value="{{ $date }}" readonly>
                                     </div>
                                 </div>
                                 <div class="col-12 col-xl-6 col-sm-6 py-3">
                                     <label><span class="text-danger">*</span>Time In : </label>
-                                    <select name="time_in" class="form-control" id="time-in">
+                                    <input type="text" name="time_in" class="form-control" id="time-in" value="{{ $setTimeIn }}" readonly />
+                                    {{-- <select name="time_in" class="form-control" id="time-in" readonly>
                                         @foreach (Config::get('times') as $index => $value)
                                             @if(!$loop->last)
                                                 <option value="{{ $value }}" @if($setTimeIn == $value) selected @endif>{{ $value }}</option>
                                             @endif
                                         @endforeach
-                                    </select>
+                                    </select> --}}
                                 </div>
                                 <div class="col-12 col-xl-6 col-sm-6 py-3">
                                     <label><span class="text-danger">*</span>Time Out : </label>
-                                    <select name="time_out" class="form-control" id="time-out">
+                                    <input type="text" name="time_out" class="form-control" id="time-out" value="{{ $setTimeOut }}" readonly />
+                                    {{-- <select name="time_out" class="form-control" id="time-out" readonly>
                                         @foreach (Config::get('times') as $index => $value)
                                             @if(!$loop->first)
                                                 <option value="{{ $value }}" @if($setTimeOut == $value) selected @endif>{{ $value }}</option>
                                             @endif
                                         @endforeach
-                                    </select>
+                                    </select> --}}
                                 </div>
                                 <div class="col-12 py-3">
                                     <label><span class="text-danger">*</span>Booker : </label>
@@ -625,7 +518,7 @@
                 minDate:'-1970/01/01', // yesterday is minimum date
             });
 
-            $('#select-date-booking').datetimepicker({
+            $('#select-date-booking1').datetimepicker({
                 timepicker:false,
                 format:'Y-m-d',
                 formatDate:'Y-m-d',

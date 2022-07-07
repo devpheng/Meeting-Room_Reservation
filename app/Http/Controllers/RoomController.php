@@ -21,6 +21,7 @@ class RoomController extends Controller
         $checkFinished = false;
         $getMeetingRoom = array();
         $getBookingRoom = array();
+        $checkMeetingFinished = array();
         $setRooms = array();
         $getRooms = Room::get();
         $getDepartments = Department::pluck("name", "id");
@@ -32,6 +33,7 @@ class RoomController extends Controller
         $getTimeInM = Carbon::parse($currentDateTimeIn->toTimeString())->format('i');
         $getTimeOutH = Carbon::parse($currentDateTimeOut->toTimeString())->format('H');
         $getTimeOutM = Carbon::parse($currentDateTimeOut->toTimeString())->format('i');
+        $setDateTimeNow = Carbon::parse($currentDateTimeIn->toTimeString())->format('Y-m-d H:i:s');
         if($getTimeInM < 30){
             $setTimeIn = $getTimeInH.":00";
             $setCurTimeIn = $getTimeInH.":00";
@@ -59,17 +61,18 @@ class RoomController extends Controller
             $setRooms[$value->id] = array(
                 'id' => $value->id,
                 'name' => $value->name
-            );$value->name;
+            );
             $getMeetingRoom[$value->id] = Booking::where("room_id", $value->id)
                 ->where(function($q) use ($setCurDate, $setTimeIn, $setTimeOut) {
                     $q->where("time_in", "<=", $setCurDate." ".$setTimeOut.":00")
                         ->where("time_out", ">=", $setCurDate." ".$setTimeOut.":00");
                 })
-                ->where(function($q) use ($setCurDate, $setCurTimeIn, $setCurTimeOut) {
-                    $q->where("time_in", "<", $setCurDate." ".$setCurTimeOut.":00")
-                        ->where("time_out", ">", $setCurDate." ".$setCurTimeOut.":00");
+                ->where(function($q) use ($setDateTimeNow) {
+                    $q->where("time_in", "<=", $setDateTimeNow)
+                        ->where("time_out", ">", $setDateTimeNow);
                 })
                 ->with('department')
+                ->latest('time_out')
                 ->first();
             $getBookingRoom[$value->id] = Booking::where("room_id", $value->id)
                 ->Where(function($q) use ($getDate, $setTimeOut, $setTimeIn){
@@ -79,7 +82,12 @@ class RoomController extends Controller
                     });
                 })
                 ->with('department')
+                ->latest('time_out')
                 ->first();
+            $checkMeetingFinished[$value->id] = false;
+            if($getBookingRoom[$value->id]){
+                $checkMeetingFinished[$value->id] = Carbon::parse($getBookingRoom[$value->id]->time_out->format('H:i'))->lt($setTimeOut);
+            }
         }
         return view('room.home', [
             'date' => $getDate,
@@ -91,7 +99,8 @@ class RoomController extends Controller
             'checkFinished' => $checkFinished,
             'getRooms' => $setRooms,
             'listBookings' => $listBookings,
-            'macAddr' => $macAddr
+            'macAddr' => $macAddr,
+            'checkMeetingFinished' => $checkMeetingFinished
         ]);
     }
 
