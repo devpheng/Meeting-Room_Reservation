@@ -527,6 +527,7 @@
         <script src="{{ asset('/assets/npm/date-time-picker/build/jquery.datetimepicker.full.min.js') }}"></script>
         <!--Local Stuff-->
         <script>
+            
             $('#date-booking').datetimepicker({
                 timepicker:false,
                 format:'Y-m-d',
@@ -651,6 +652,69 @@
                 $('.s-close').on('click', function(){
                     location.reload();
                 });
+
+                var timeInOption = $("#time_in_select").html();
+                var timeOutOption = $("#time_out_select").html();
+                var timeIn = [
+                            '08:00',
+                            '08:30',
+                            '09:00',
+                            '09:30',
+                            '10:00',
+                            '10:30',
+                            '11:00',
+                            '11:30',
+                            '12:00',
+                            '12:30',
+                            '13:00',
+                            '13:30',
+                            '14:00',
+                            '14:30',
+                            '15:00',
+                            '15:30',
+                            '16:00',
+                            '16:30',
+                        ];
+                var timeOut = [
+                            '08:30',
+                            '09:00',
+                            '09:30',
+                            '10:00',
+                            '10:30',
+                            '11:00',
+                            '11:30',
+                            '12:00',
+                            '12:30',
+                            '13:00',
+                            '13:30',
+                            '14:00',
+                            '14:30',
+                            '15:00',
+                            '15:30',
+                            '16:00',
+                            '16:30',
+                            '17:00',
+                        ];
+
+                $("#date-booking").on("change", function (e) {
+                    let today = new Date().toISOString().slice(0, 10);
+                    let selectedDate = $(this).val();
+
+                    let timeInSelect = "";
+                    let timeOutSelect = "";
+                    if (selectedDate != today) {
+                        for(let i=0; i<18; i++) {
+                            timeInSelect += `<option value="${timeIn[i]}" id="timeIn-${i}}">${timeIn[i]}</option>`;
+                            timeOutSelect += `<option value="${timeOut[i]}" id="timeOut-${i}}">${timeOut[i]}</option>`;
+                        }
+                        $("#time_in_select").html(timeInSelect);
+                        $("#time_out_select").html(timeOutSelect);
+                    } else {
+                        $("#time_in_select").html(timeInOption);
+                        $("#time_out_select").html(timeOutOption);
+                    }
+                });
+
                 $('#cancel-success').modal({backdrop: 'static', keyboard: false});
                 $("#time_in_select").change(function(){
                     let getValue = $('#time_in_select').find(":selected").text();
