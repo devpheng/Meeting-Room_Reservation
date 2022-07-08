@@ -57,13 +57,11 @@ jQuery(document).ready(function($) {
             let $id = $('#id').val();
             if($id == '') {
                 $department = `<tr data-id="${data.department.id}">
-                        <td class="align-middle">
-                            <span class="tag-name">${data.department.name}</span>
-                        </td>
+                        <td class="serial text-success"><i class="fa-solid fa-circle-check"></i></td>
+                        <td class="align-middle"><span class="tag-name">${data.department.name}</span></td>
                         <td>
                             <div class="action-box">
-                                <a href="javascript:void(0)" class="btn btn-primary edit">Edit</a>
-                                <a href="javascript:void(0)" data-id="${data.department.id}" class="btn btn-danger delete">Delete</a>
+                                <button type="button" class="btn btn-outline-primary btn-sm edit"><i class="fa-solid fa-file-pen"></i>&nbsp; Edit</button>
                             </div>
                         </td>
                     </tr>`;
@@ -116,7 +114,7 @@ jQuery(document).ready(function($) {
         });
     });
 
-    $('.table tr th').on('click', function(e) {
+    $('.table tr thdemo').on('click', function(e) {
         let tags = tableToArray('.table');
         let index = $(this).parent().find('th').index(this);
         let sort = $(this).attr('data-sort');
@@ -147,17 +145,17 @@ jQuery(document).ready(function($) {
         }
         $('.table tbody').html("");
         tags.forEach(function(tag) {
+            var i =1;
             $row = `<tr data-id="${tag[3]}">
-                        <td class="align-middle">
-                            <span class="tag-name">${tag[0]}</span>
-                        </td>
+                        <td class="serial text-success">${i}</td>
+                        <td class="align-middle"><span class="tag-name">>${tag[0]}</span></td>
                         <td>
                             <div class="action-box">
-                                <a href="javascript:void(0)" class="btn btn-primary edit">Edit</a>
-                                <a href="javascript:void(0)" data-id="${tag[3]}" class="btn btn-danger delete">Delete</a>
+                                <button type="button" class="btn btn-outline-primary btn-sm edit"><i class="fa-solid fa-file-pen"></i>&nbsp; Edit</button>
                             </div>
                         </td>
                     </tr>`;
+            i++;
             $('.table tbody').prepend($row);
         });
     });

@@ -15,7 +15,7 @@ class DepartmentController extends Controller
      */
     public function index()
     {
-        $departments = Department::get();
+        $departments = Department::paginate(10);
         return view('admin.department.index', ['departments' => $departments]);
     }
 
@@ -79,7 +79,12 @@ class DepartmentController extends Controller
      */
     public function update(Request $request, Department $department)
     {
-        $department->update($request->all());
+        $department = Department::where('id', '<>', $request->id)->where('name', $request->name)->first();
+        if(!$department){
+            $department->update($request->all());
+        } else {
+            return ['message' => 'Department already exist'];
+        }
         return ['department' => $department];
     }
 

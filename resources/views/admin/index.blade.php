@@ -1,426 +1,210 @@
-<!doctype html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Admin Booking System | Shinhan Bank Cambodia</title>
-    <meta name="description" content="Ela Admin - HTML5 Admin Template">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="apple-touch-icon" href="{{ asset('/images/sbc_logo.png') }}">
-    <link rel="shortcut icon" href="{{ asset('/images/sbc_logo.png') }}">
-
-    <link rel="stylesheet" href="{{ asset('/assets/npm/normalize.css@8.0.0/normalize.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('/assets/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('/assets/npm/fontawesome@6.1.1/css/fontawesome.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('/assets/npm/fontawesome@6.1.1/css/solid.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('/assets/css/cs-skin-elastic.css') }}">
-    <link rel="stylesheet" href="{{ asset('/assets/css/style.css') }}">
-
-   <style>
-    #weatherWidget .currentDesc {
-        color: #ffffff!important;
+@extends('admin.layouts.app')
+<style>
+    .modal-msg-pop{
+        width:100%;
+        padding:20px;
+        text-align:center;
     }
-        .traffic-chart {
-            min-height: 335px;
-        }
-        #flotPie1  {
-            height: 115px;
-        }
-        #flotPie1 td {
-            padding:3px;
-        }
-        #flotPie1 table {
-            top: 20px!important;
-            right: -10px!important;
-        }
-        .chart-container {
-            display: table;
-            min-width: 270px ;
-            text-align: left;
-            padding-top: 10px;
-            padding-bottom: 10px;
-        }
-        #flotLine5  {
-             height: 115px;
-        }
 
-        #flotBarChart {
-            height: 150px;
-        }
-        #cellPaiChart{
-            height: 160px;
-        }
-
-    </style>
-</head>
-
-<body>
-    <!-- Left Panel -->
-    <aside id="left-panel" class="left-panel">
-        <nav class="navbar navbar-expand-sm navbar-default">
-            <div id="main-menu" class="main-menu collapse navbar-collapse">
-                <ul class="nav navbar-nav">
-                    <li class="active">
-                        <a href="index.html"><i class="menu-icon fa fa-laptop"></i>Dashboard </a>
-                    </li>
-                    <li class="menu-item-has-children dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa-solid fa-house"></i>Rooms</a>
-                        <ul class="sub-menu children dropdown-menu">                            
-                            <li><i class="fa-solid fa-list"></i><a href="ui-buttons.html">Lists</a></li>
-                            <li><i class="fa-solid fa-folder-plus"></i><a href="ui-badges.html">Create</a></li>
-                        </ul>
-                    </li>
-                     <li class="menu-item-has-children dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa-solid fa-house-circle-check"></i>Booking Room</a>
-                        <ul class="sub-menu children dropdown-menu">
-                            <li><i class="fa-solid fa-list"></i><a href="forms-basic.html">Basic Form</a></li>
-                            <li><i class="menu-icon fa fa-th"></i><a href="forms-advanced.html">Advanced Form</a></li>
-                        </ul>
-                    </li>
-                    <li class="menu-item-has-children dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-table"></i>Departments</a>
-                        <ul class="sub-menu children dropdown-menu">
-                            <li><i class="fa fa-table"></i><a href="tables-basic.html">Lists</a></li>
-                            <li><i class="fa fa-table"></i><a href="tables-data.html">Create</a></li>
-                        </ul>
-                    </li>
-                   
-                </ul>
-            </div><!-- /.navbar-collapse -->
-        </nav>
-    </aside>
-    <!-- /#left-panel -->
-    <!-- Right Panel -->
-    <div id="right-panel" class="right-panel">
-        <!-- Header-->
-        <header id="header" class="header">
-            <div class="top-left">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="{{ route('admin.index')}}"><img src="{{ asset('images/sbc_logo.png') }}" alt="Shinhan Bank" width="30px"> Booking System</a>
-                    <a class="navbar-brand hidden" href="{{ route('admin.index')}}"><img src="{{ asset('images/sbc_logo.png') }}" alt="Shinhan Bank" width="30px"> Booking System</a>
-                    <a id="menuToggle" class="menutoggle"><i class="fa fa-bars"></i></a>
-                </div>
-            </div>
-            <div class="top-right">
-                <div class="header-menu">
-                    <div class="user-area dropdown float-right">
-                        <a class="dropdown-toggle active" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            <i class="fa-solid fa-arrow-right-from-bracket"></i>
-                        </a>
-                         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                            @csrf
-                        </form>
+    .modal-msg-pop i{
+        margin:0 auto;
+        display:block;
+        margin-bottom:25px;
+        font-size: 90px;
+    }
+</style>
+@section('content')
+@if(session()->has('message-cancel'))
+    <div class="alert alert-success"> {{ session('message-cancel') }} </div>
+@endif
+<!-- Animated -->
+<div class="animated fadeIn">
+    <!-- Widgets  -->
+    <div class="row">
+        <div class="col-lg-3 col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="stat-widget-five">
+                        <div class="stat-icon dib flat-color-1">
+                            <i class="fa-solid fa-house-lock"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="text-left dib">
+                                <div class="stat-text"><span class="count">{{ $countAllBooking }}</span></div>
+                                <div class="stat-heading">All Booking</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </header>
-        <!-- /#header -->
-        <!-- Content -->
-        <div class="content">
-            <!-- Animated -->
-            <div class="animated fadeIn">
-                <!-- Widgets  -->
-                <div class="row">
-                    <div class="col-lg-3 col-md-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="stat-widget-five">
-                                    <div class="stat-icon dib flat-color-1">
-                                        <i class="fa-solid fa-house-lock"></i>
-                                    </div>
-                                    <div class="stat-content">
-                                        <div class="text-left dib">
-                                            <div class="stat-text"><span class="count">{{ $countAllBooking }}</span></div>
-                                            <div class="stat-heading">All Booking</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-md-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="stat-widget-five">
-                                    <div class="stat-icon dib flat-color-2">
-                                        <i class="fa-solid fa-house-lock"></i>
-                                    </div>
-                                    <div class="stat-content">
-                                        <div class="text-left dib">
-                                            <div class="stat-text"><span class="count">{{ $countTodayBooking }}</span></div>
-                                            <div class="stat-heading">Today Booking</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-md-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="stat-widget-five">
-                                    <div class="stat-icon dib flat-color-3">
-                                        <i class="fa-solid fa-building-user"></i>
-                                    </div>
-                                    <div class="stat-content">
-                                        <div class="text-left dib">
-                                            <div class="stat-text"><span class="count">{{ $countDepartment }}</span></div>
-                                            <div class="stat-heading">Total Department</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-md-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="stat-widget-five">
-                                    <div class="stat-icon dib flat-color-4">
-                                        <i class="fa-solid fa-person-shelter"></i>
-                                    </div>
-                                    <div class="stat-content">
-                                        <div class="text-left dib">
-                                            <div class="stat-text"><span class="count">{{ $countRoom }}</span></div>
-                                            <div class="stat-heading">Total Room</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- /Widgets -->
-            </div>
-            <!-- .animated -->
-             <!-- Orders -->
-                <div class="orders">
-                    <div class="row">
-                        <div class="col-xl-12">
-                            <div class="row">
-                                <div class="col-6 col-md-3">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <a href="#">
-                                                <div class="card br-0 mb-3">
-                                                    <div class="card-body">
-                                                        <div class="stat-widget-five">
-                                                            <div class="stat-icon dib">
-                                                                <i class="fa-solid fa-file-circle-plus"></i>
-                                                            </div>
-                                                            <div class="stat-content">
-                                                                <div class="text-left dib">
-                                                                    <div class="stat-text">New Booking</div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </div>
-                                         <div class="col-12">
-                                            <a href="#">
-                                                <div class="card br-0">
-                                                    <div class="card-body">
-                                                        <div class="stat-widget-five">
-                                                            <div class="stat-icon dib">
-                                                                <i class="fa-solid fa-plus"></i>
-                                                            </div>
-                                                            <div class="stat-content">
-                                                                <div class="text-left dib">
-                                                                    <div class="stat-text">New Department</div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-6 col-md-3">
-                                    <div class="card br-0">
-                                        <div class="card-body pb-0">
-                                            <h4 class="card-title m-0">Last Month Top 3 Department Booking</h4>
-                                        </div>
-                                         <div class="card-body">
-                                            <div class="chart-container ov-h">
-                                                <div id="flotPie1" class="float-chart"></div>
-                                            </div>
-                                        </div>
-                                    </div><!-- /.card -->
-                                </div>
-
-                                <div class="col-12 col-md-6">
-                                    <div class="card bg-flat-color-3  ">
-                                        <div class="card-body">
-                                            <h4 class="card-title m-0  white-color ">Last Year Graph Booking</h4>
-                                        </div>
-                                         <div class="card-body">
-                                             <div id="flotLine5" class="flot-line"></div>
-                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> <!-- /.col-md-4 -->
-                        <div class="col-xl-12">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h4 class="box-title">Lists Booking ( {{ $currentDate->format('d M Y') }} ) </h4>
-                                </div>
-                                <div class="card-body--">
-                                    <div class="table-stats order-table ov-h">
-                                        <table class="table ">
-                                            <thead>
-                                                <tr>
-                                                    <th class="serial">#</th>
-                                                    <th>ROOM NAME</th>
-                                                    <th>TIME IN</th>
-                                                    <th>TIME OUT</th>
-                                                    <th>BOOKING BY</th>
-                                                    <th>DEPARTMENT</th>
-                                                    <th>PURPOSE</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach($getTodayBooking as $key => $value)
-                                                    <tr>
-                                                        <td class="serial">{{ $key + 1 }}</td>
-                                                        <td> {{ $value->room->name }}</td>
-                                                        <td> {{ $value->time_in->format('H:i') }}</td>
-                                                        <td> {{ $value->time_out->format('H:i') }}</td>
-                                                        <td> {{ $value->booker }}</td>
-                                                        <td> {{ $value->department->name }}</td>
-                                                        <td>
-                                                            {{ $value->purpose }}
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div> <!-- /.table-stats -->
-                                </div>
-                            </div> <!-- /.card -->
-                        </div>  <!-- /.col-lg-12 -->
-                    </div>
-                </div>
-                <!-- /.orders -->
         </div>
-        <!-- /.content -->
-        <div class="clearfix"></div>
-        <!-- Footer -->
-        <footer class="site-footer">
-            <div class="footer-inner bg-white">
-                <div class="row">
-                    <div class="col-sm-6">
-                        Copyright &copy; 2022 Shinhan Bank Cambodia
+        <div class="col-lg-3 col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="stat-widget-five">
+                        <div class="stat-icon dib flat-color-2">
+                            <i class="fa-solid fa-house-lock"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="text-left dib">
+                                <div class="stat-text"><span class="count">{{ $countTodayBooking }}</span></div>
+                                    <div class="stat-heading">Today Booking</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </footer>
-        <!-- /.site-footer -->
+            <div class="col-lg-3 col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="stat-widget-five">
+                            <div class="stat-icon dib flat-color-3">
+                                <i class="fa-solid fa-building-user"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="text-left dib">
+                                    <div class="stat-text"><span class="count">{{ $countDepartment }}</span></div>
+                                    <div class="stat-heading">Total Department</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+             <div class="col-lg-3 col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="stat-widget-five">
+                            <div class="stat-icon dib flat-color-4">
+                                <i class="fa-solid fa-person-shelter"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="text-left dib">
+                                    <div class="stat-text"><span class="count">{{ $countRoom }}</span></div>
+                                    <div class="stat-heading">Total Room</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Widgets -->
     </div>
-    <!-- /#right-panel -->
-
-    <!-- Scripts -->
-    <script src="{{ asset('/assets/npm/date-time-picker/jquery.js') }}"></script>
-    <script src="{{ asset('/assets/npm//bootstrap@4.1.3/dist/js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('/assets/npm/date-time-picker/moment.js') }}"></script>
-    <script src="{{ asset('/assets/npm/date-time-picker/build/jquery.datetimepicker.full.min.js') }}"></script>
-     <!-- Scripts -->
-    <script src="{{ asset('/assets/npm/jquery-match-height@0.7.2/dist/jquery.matchHeight.min.js') }}"></script>
-    <script src="{{ asset('/assets/js/main.js') }}"></script>
-
-    <!--  Chart js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.7.3/dist/Chart.bundle.min.js"></script>
-
-    <!--Chartist Chart-->
-    <script src="https://cdn.jsdelivr.net/npm/chartist@0.11.0/dist/chartist.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartist-plugin-legend@0.6.2/chartist-plugin-legend.min.js"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/jquery.flot@0.8.3/jquery.flot.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/flot-pie@1.0.0/src/jquery.flot.pie.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/flot-spline@0.0.1/js/jquery.flot.spline.min.js"></script>
-
-    <!--Local Stuff-->
+    <!-- .animated -->
+    <!-- Booking -->
+    <div class="Booking">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="box-title">Lists Booking ( {{ $currentDate->format('d M Y') }} ) </h4>
+                    </div>
+                    <div class="card-body--">
+                        <div class="table-stats order-table ov-h">
+                            <table class="table ">
+                                <thead>
+                                    <tr>
+                                        <th class="serial">#</th>
+                                        <th>ROOM NAME</th>
+                                        <th>TIME IN</th>
+                                        <th>TIME OUT</th>
+                                        <th>BOOKING BY</th>
+                                        <th>DEPARTMENT</th>
+                                        <th>PURPOSE</th>
+                                        <th>ACTION</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($getTodayBooking as $key => $value)
+                                    <tr>
+                                        <td class="serial">{{ $key + 1 }}</td>
+                                        <td> {{ $value->room->name }}</td>
+                                        <td> {{ $value->time_in->format('H:i') }}</td>
+                                        <td> {{ $value->time_out->format('H:i') }}</td>
+                                        <td> {{ $value->booker }}</td>
+                                        <td> {{ $value->department->name }}</td>
+                                        <td>
+                                            {{ $value->purpose }}
+                                        </td>
+                                        <td>
+                                            @if($value->checkTimeStatus())
+                                                <button type="button" class="btn btn-outline-danger btn-sm btn-cancel-booking" data-id="{{ $value->id }}" data-value="The Meeting at {{ $value->room->name }} on {{ $value->time_in->format('d-m-Y') }} from {{ $value->time_in->format('H:i') }} to {{ $value->time_out->format('H:i') }} " data-toggle="modal" data-target="#cancel-booking-modal" data-backdrop="static" data-keyboard="false"><i class="fa-solid fa-circle-minus"></i>&nbsp;Cancel</button>
+                                            @elseif($value->checkMeetingTime())
+                                                <button type="button" class="btn btn-outline-success btn-sm" disabled><i class="fa-solid fa-circle-minus"></i>&nbsp;On Meeting</button>
+                                            @else
+                                                <button type="button" class="btn btn-outline-secondary btn-sm" disabled><i class="fa-solid fa-circle-minus"></i>&nbsp;Meeting Finished</button>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                    @if($getRoom && ($getDay == 'Tue' || $getDay == 'Thu'))
+                                    <tr>
+                                        <td class="serial">{{ count($getTodayBooking) + 1 }}</td>
+                                        <td> {{ $getRoom->name }}</td>
+                                        <td> 8:00</td>
+                                        <td> 12:00</td>
+                                        <td> SYSTEM</td>
+                                        <td> - </td>
+                                        <td>
+                                            AUTO BOOKING
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-outline-success btn-sm" disabled><i class="fa-solid fa-circle-minus"></i>&nbsp;On Meeting</button>
+                                        </td>
+                                    </tr>
+                                    @endif
+                                </tbody>
+                            </table>
+                        </div> <!-- /.table-stats -->
+                    </div>
+                </div> <!-- /.card -->
+            </div>  <!-- /.col-lg-12 -->
+        </div>
+    </div>
+    <!-- /.Booking -->
+    <!--Model Cancel Booking-->
+    <div class="container">
+        <div class="row">
+            <div class="modal fade" id="cancel-booking-modal" role="dialog">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <form class="float-right m-0" method="post" action="{{ route('admin.booking.delete') }}">
+                    @method('delete')
+                    @csrf
+                        <div class="modal-content">
+                            <input type="hidden" name="id" id="cancel-id" />
+                            <div class="modal-body">
+                                <div class="modal-msg-pop">
+                                    <p class="text-danger"><i class="fa-solid fa-users-rays"></i></p>
+                                    <h3>Are you sure you want to cancel this booking ?</h3>
+                                    <p class="m-3" id="cancel-notice"></p>
+                                </div>
+                                <div class="justify-content-center align-items-center d-flex m-auto">
+                                    <button type="submit" class="btn btn-primary m-2"><span>Yes</span></button>
+                                    <button type="button" class="btn btn-info m-2" data-dismiss="modal" aria-label=""><span>No</span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Model Cancel Booking-->
+    @push('scripts')
     <script>
-        jQuery(document).ready(function($) {
-            "use strict";
-
-            // Pie chart flotPie1
-            var piedata = [
-                { label: "Desktop visits", data: [[1,32]], color: '#5c6bc0'},
-                { label: "Tab visits", data: [[1,33]], color: '#ef5350'},
-                { label: "Mobile visits", data: [[1,35]], color: '#66bb6a'}
-            ];
-
-            $.plot('#flotPie1', piedata, {
-                series: {
-                    pie: {
-                        show: true,
-                        radius: 1,
-                        innerRadius: 0.65,
-                        label: {
-                            show: true,
-                            radius: 2/3,
-                            threshold: 1
-                        },
-                        stroke: {
-                            width: 0
-                        }
-                    }
-                },
-                grid: {
-                    hoverable: true,
-                    clickable: true
-                }
-            });
-            // Pie chart flotPie1  End
-
-            // Line Chart  #flotLine5
-            var newCust = [[0, 3], [1, 5], [2,4], [3, 7], [4, 9], [5, 3], [6, 6], [7, 4], [8, 10], [9, 15], [10, 11], [11, 18]];
-
-            var plot = $.plot($('#flotLine5'),[{
-                data: newCust,
-                label: 'New Data Flow',
-                color: '#fff'
-            }],
-            {
-                series: {
-                    lines: {
-                        show: true,
-                        lineColor: '#fff',
-                        lineWidth: 2
-                    },
-                    points: {
-                        show: true,
-                        fill: true,
-                        fillColor: "#ffffff",
-                        symbol: "circle",
-                        radius: 3
-                    },
-                    shadowSize: 0
-                },
-                points: {
-                    show: true,
-                },
-                legend: {
-                    show: false
-                },
-                grid: {
-                    show: false
-                }
-            });
-            // Line Chart  #flotLine5 End
+    jQuery(document).ready(function($) {
+        $('.btn-cancel-booking').on('click', function(){
+            $('#cancel-id').val("");
+            $('#cancel-notice').html("");
+            $('#cancel-notice').html($(this).attr('data-value'));
+            $('#cancel-id').val($(this).attr('data-id'))
         });
+    })
     </script>
-</body>
-</html>
+    @endpush
+@endsection
+        
+        

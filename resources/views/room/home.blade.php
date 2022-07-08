@@ -224,7 +224,7 @@
                                         <div class="row">
                                              <div class="col-4">
                                                 <div class="card card-border">
-                                                    <x-room-button type="button" :checkFinished="$checkFinished" :getRooms="$getRooms[1]" :getBookingRoom="$getBookingRoom[1]" :getMeetingRoom="$getMeetingRoom[1]" :setTimeIn="$setTimeIn" :setTimeOut="$setTimeOut" :macAddr="$macAddr" :checkMeetingFinished="$checkMeetingFinished[1]"/>
+                                                    <x-room-button type="button" :checkFinished="$checkFinished" :getRooms="$getRooms[1]" :getBookingRoom="$getBookingRoom[1]" :getMeetingRoom="$getMeetingRoom[1]" :setTimeIn="$setTimeIn" :setTimeOut="$setTimeOut" :macAddr="$macAddr" :checkMeetingFinished="$checkMeetingFinished[1]" :checkSystemBooking="$checkSystemBooking"/>
                                                 </div>
                                             </div>    
                                             <div class="col-8">
@@ -250,19 +250,19 @@
                                             </div>
                                             <div class="col-3 mb-4 p-0">
                                                 <div class="card card-border m-0">
-                                                    <x-room-button type="button" :checkFinished="$checkFinished" :getRooms="$getRooms[2]" :getBookingRoom="$getBookingRoom[2]" :getMeetingRoom="$getMeetingRoom[2]" :setTimeIn="$setTimeIn" :setTimeOut="$setTimeOut" :macAddr="$macAddr" :checkMeetingFinished="$checkMeetingFinished[2]"/>
+                                                    <x-room-button type="button" :checkFinished="$checkFinished" :getRooms="$getRooms[2]" :getBookingRoom="$getBookingRoom[2]" :getMeetingRoom="$getMeetingRoom[2]" :setTimeIn="$setTimeIn" :setTimeOut="$setTimeOut" :macAddr="$macAddr" :checkMeetingFinished="$checkMeetingFinished[2]" :checkSystemBooking="$checkSystemBooking"/>
                                                 </div>
                                             </div>
                                             <div class="col-4 mb-4 pl-0">
                                                 <div class="row">
                                                     <div class="col-12">
                                                         <div class="card card-border m-0">
-                                                            <x-room-button type="button" :checkFinished="$checkFinished" :getRooms="$getRooms[3]" :getBookingRoom="$getBookingRoom[3]" :getMeetingRoom="$getMeetingRoom[3]" :setTimeIn="$setTimeIn" :setTimeOut="$setTimeOut" :macAddr="$macAddr" :checkMeetingFinished="$checkMeetingFinished[3]"/>
+                                                            <x-room-button type="button" :checkFinished="$checkFinished" :getRooms="$getRooms[3]" :getBookingRoom="$getBookingRoom[3]" :getMeetingRoom="$getMeetingRoom[3]" :setTimeIn="$setTimeIn" :setTimeOut="$setTimeOut" :macAddr="$macAddr" :checkMeetingFinished="$checkMeetingFinished[3]" :checkSystemBooking="$checkSystemBooking"/>
                                                         </div>
                                                     </div>
                                                     <div class="col-12">
                                                         <div class="card card-border">
-                                                            <x-room-button type="button" :checkFinished="$checkFinished" :getRooms="$getRooms[4]" :getBookingRoom="$getBookingRoom[4]" :getMeetingRoom="$getMeetingRoom[4]" :setTimeIn="$setTimeIn" :setTimeOut="$setTimeOut" :macAddr="$macAddr" :checkMeetingFinished="$checkMeetingFinished[4]"/>
+                                                            <x-room-button type="button" :checkFinished="$checkFinished" :getRooms="$getRooms[4]" :getBookingRoom="$getBookingRoom[4]" :getMeetingRoom="$getMeetingRoom[4]" :setTimeIn="$setTimeIn" :setTimeOut="$setTimeOut" :macAddr="$macAddr" :checkMeetingFinished="$checkMeetingFinished[4]" :checkSystemBooking="$checkSystemBooking"/>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -271,7 +271,7 @@
                                         <div class="row">
                                             <div class="col-3 mb-4 pr-0">
                                                 <div class="card card-border">
-                                                    <x-room-button type="button" :checkFinished="$checkFinished" :getRooms="$getRooms[5]" :getBookingRoom="$getBookingRoom[5]" :getMeetingRoom="$getMeetingRoom[5]" :setTimeIn="$setTimeIn" :setTimeOut="$setTimeOut" :macAddr="$macAddr" :checkMeetingFinished="$checkMeetingFinished[5]"/>
+                                                    <x-room-button type="button" :checkFinished="$checkFinished" :getRooms="$getRooms[5]" :getBookingRoom="$getBookingRoom[5]" :getMeetingRoom="$getMeetingRoom[5]" :setTimeIn="$setTimeIn" :setTimeOut="$setTimeOut" :macAddr="$macAddr" :checkMeetingFinished="$checkMeetingFinished[5]" :checkSystemBooking="$checkSystemBooking"/>
                                                 </div>
                                             </div>
                                             <div class="col-2 mb-4 p-0">
@@ -405,7 +405,7 @@
                                             <h3>Booking Fail!</h3>
                                             <p id="error-msg"></p>
                                         </div>
-                                        <button type="button" class="btn btn-info justify-content-center align-items-center d-flex m-auto" data-dismiss="modal" aria-label=""><span>close</span></button>
+                                        <button type="button" class="btn btn-info justify-content-center align-items-center d-flex m-auto" data-dismiss="modal" aria-label="" id="heng-btn-close"><span>close</span></button>
                                     </div>
                                 </div>
                             </div>
@@ -644,6 +644,9 @@
                     $('#cancel-notice').html("");
                     $('#cancel-notice').html($(this).attr('data-value'));
                     $('#cancel-id').val($(this).attr('data-id'))
+                });
+                $('#heng-btn-close').on('click', function(){
+                    location.reload();
                 });
                 $('.s-close').on('click', function(){
                     location.reload();

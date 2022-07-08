@@ -5,6 +5,9 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Admin\RoomController as AdminRoomController;
+use App\Http\Controllers\Admin\DepartmentController as AdminDepartmentController;
+use App\Http\Controllers\Admin\BookingController as AdminBookingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,7 +42,15 @@ Route::group(['prefix'=>'bookings','as'=>'booking.'], function(){
 Route::group(['prefix'=>'admin','as'=>'admin.'], function(){
     Route::get('/', [AdminController::class, 'index'])->name('index');
 });
-Route::prefix('admin')->group(function () {
-    Route::resource('/department', App\Http\Controllers\Admin\DepartmentController::class);
+Route::group(['prefix'=>'admin','as'=>'admin.'], function () {
+    Route::resource('/department', AdminDepartmentController::class);
+    Route::group(['prefix'=>'room','as'=>'room.'], function(){
+        Route::get('/', [AdminRoomController::class, 'index'])->name('index');
+        Route::post('/update', [AdminRoomController::class, 'update'])->name('update');
+    });
+    Route::group(['prefix'=>'booking','as'=>'booking.'], function(){
+        Route::get('/', [AdminBookingController::class, 'index'])->name('index');
+        Route::delete('/delete', [AdminBookingController::class, 'delete'])->name('delete'); 
+    });
 });
 

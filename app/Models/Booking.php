@@ -27,4 +27,20 @@ class Booking extends Model
     public function room(){
         return $this->hasOne(Room::class, 'id', 'room_id');
     }
+
+    public function checkTimeStatus(){
+        $nowDate = Carbon::now();
+        if($nowDate->lt($this->time_in)){
+            return true;
+        }
+        return false;
+    }
+
+    public function checkMeetingTime(){
+        $nowDate = Carbon::now();
+        if($nowDate->gt($this->time_in) && $nowDate->lt($this->time_out)){
+            return true;
+        }
+        return false;
+    }
 }

@@ -15,12 +15,13 @@ class RoomButton extends Component
     public $setTimeOut;
     public $macAddr;
     public $checkMeetingFinished;
+    public $checkSystemBooking;
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($type, $checkFinished, $getRooms, $getBookingRoom, $getMeetingRoom, $setTimeIn, $setTimeOut, $macAddr,  $checkMeetingFinished)
+    public function __construct($type, $checkFinished, $getRooms, $getBookingRoom, $getMeetingRoom, $setTimeIn, $setTimeOut, $macAddr,  $checkMeetingFinished, $checkSystemBooking)
     {
         $this->type = $type;
         $this->checkFinished = $checkFinished;
@@ -31,6 +32,7 @@ class RoomButton extends Component
         $this->setTimeOut = $setTimeOut;
         $this->macAddr = $macAddr;
         $this->checkMeetingFinished = $checkMeetingFinished;
+        $this->checkSystemBooking = $checkSystemBooking;
     }
 
     /**
