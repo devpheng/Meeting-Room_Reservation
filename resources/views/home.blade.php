@@ -111,7 +111,7 @@
                                                 </div>
                                                 <div class="stat-content">
                                                     <div class="text-left dib">
-                                                        <div class="stat-text"><span>BOOKING ROOM</span></div>
+                                                        <div class="stat-text"><span>ROOM BOOKING</span></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -134,7 +134,7 @@
                                                 </div>
                                                 <div class="stat-content">
                                                     <div class="text-left dib">
-                                                        <div class="stat-text"><span>BOOKING CAR</span></div>
+                                                        <div class="stat-text"><span>CAR BOOKING</span></div>
                                                     </div>
                                                 </div>
                                             </div>

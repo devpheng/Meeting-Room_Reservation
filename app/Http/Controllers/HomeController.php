@@ -62,7 +62,6 @@ class HomeController extends Controller
             $setCurTimeOut = $getTimeOutH.":30";
         }
        
-
         if($request->query('search') == "true"){
             $getDate = $request->query('date');
             $setTimeIn = $request->query('time_in');

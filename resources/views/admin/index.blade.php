@@ -68,10 +68,17 @@
                         <a href="index.html"><i class="menu-icon fa fa-laptop"></i>Dashboard </a>
                     </li>
                     <li class="menu-item-has-children dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-cogs"></i>Rooms</a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa-solid fa-house"></i>Rooms</a>
                         <ul class="sub-menu children dropdown-menu">                            
-                            <li><i class="fa fa-puzzle-piece"></i><a href="ui-buttons.html">Lists</a></li>
-                            <li><i class="fa fa-id-badge"></i><a href="ui-badges.html">Create</a></li>
+                            <li><i class="fa-solid fa-list"></i><a href="ui-buttons.html">Lists</a></li>
+                            <li><i class="fa-solid fa-folder-plus"></i><a href="ui-badges.html">Create</a></li>
+                        </ul>
+                    </li>
+                     <li class="menu-item-has-children dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa-solid fa-house-circle-check"></i>Booking Room</a>
+                        <ul class="sub-menu children dropdown-menu">
+                            <li><i class="fa-solid fa-list"></i><a href="forms-basic.html">Basic Form</a></li>
+                            <li><i class="menu-icon fa fa-th"></i><a href="forms-advanced.html">Advanced Form</a></li>
                         </ul>
                     </li>
                     <li class="menu-item-has-children dropdown">
@@ -81,13 +88,7 @@
                             <li><i class="fa fa-table"></i><a href="tables-data.html">Create</a></li>
                         </ul>
                     </li>
-                    <li class="menu-item-has-children dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-th"></i>Booking</a>
-                        <ul class="sub-menu children dropdown-menu">
-                            <li><i class="menu-icon fa fa-th"></i><a href="forms-basic.html">Basic Form</a></li>
-                            <li><i class="menu-icon fa fa-th"></i><a href="forms-advanced.html">Advanced Form</a></li>
-                        </ul>
-                    </li>
+                   
                 </ul>
             </div><!-- /.navbar-collapse -->
         </nav>
@@ -134,7 +135,7 @@
                                     <div class="stat-content">
                                         <div class="text-left dib">
                                             <div class="stat-text"><span class="count">{{ $countAllBooking }}</span></div>
-                                            <div class="stat-heading">Today All Booking</div>
+                                            <div class="stat-heading">All Booking</div>
                                         </div>
                                     </div>
                                 </div>
@@ -273,7 +274,7 @@
                         <div class="col-xl-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <h4 class="box-title">Lists Booking ( 7-6-2022 ) </h4>
+                                    <h4 class="box-title">Lists Booking ( {{ $currentDate->format('d M Y') }} ) </h4>
                                 </div>
                                 <div class="card-body--">
                                     <div class="table-stats order-table ov-h">
@@ -281,90 +282,28 @@
                                             <thead>
                                                 <tr>
                                                     <th class="serial">#</th>
-                                                    <th class="avatar">Avatar</th>
-                                                    <th>ID</th>
-                                                    <th>Name</th>
-                                                    <th>Product</th>
-                                                    <th>Quantity</th>
-                                                    <th>Status</th>
+                                                    <th>ROOM NAME</th>
+                                                    <th>TIME IN</th>
+                                                    <th>TIME OUT</th>
+                                                    <th>BOOKING BY</th>
+                                                    <th>DEPARTMENT</th>
+                                                    <th>PURPOSE</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td class="serial">1.</td>
-                                                    <td class="avatar">
-                                                        <div class="round-img">
-                                                            <a href="#"><img class="rounded-circle" src="images/avatar/1.jpg" alt=""></a>
-                                                        </div>
-                                                    </td>
-                                                    <td> #5469 </td>
-                                                    <td>  <span class="name">Louis Stanley</span> </td>
-                                                    <td> <span class="product">iMax</span> </td>
-                                                    <td><span class="count">231</span></td>
-                                                    <td>
-                                                        <span class="badge badge-complete">Complete</span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="serial">2.</td>
-                                                    <td class="avatar">
-                                                        <div class="round-img">
-                                                            <a href="#"><img class="rounded-circle" src="images/avatar/2.jpg" alt=""></a>
-                                                        </div>
-                                                    </td>
-                                                    <td> #5468 </td>
-                                                    <td>  <span class="name">Gregory Dixon</span> </td>
-                                                    <td> <span class="product">iPad</span> </td>
-                                                    <td><span class="count">250</span></td>
-                                                    <td>
-                                                        <span class="badge badge-complete">Complete</span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="serial">3.</td>
-                                                    <td class="avatar">
-                                                        <div class="round-img">
-                                                            <a href="#"><img class="rounded-circle" src="images/avatar/3.jpg" alt=""></a>
-                                                        </div>
-                                                    </td>
-                                                    <td> #5467 </td>
-                                                    <td>  <span class="name">Catherine Dixon</span> </td>
-                                                    <td> <span class="product">SSD</span> </td>
-                                                    <td><span class="count">250</span></td>
-                                                    <td>
-                                                        <span class="badge badge-complete">Complete</span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="serial">4.</td>
-                                                    <td class="avatar">
-                                                        <div class="round-img">
-                                                            <a href="#"><img class="rounded-circle" src="images/avatar/4.jpg" alt=""></a>
-                                                        </div>
-                                                    </td>
-                                                    <td> #5466 </td>
-                                                    <td>  <span class="name">Mary Silva</span> </td>
-                                                    <td> <span class="product">Magic Mouse</span> </td>
-                                                    <td><span class="count">250</span></td>
-                                                    <td>
-                                                        <span class="badge badge-pending">Pending</span>
-                                                    </td>
-                                                </tr>
-                                                <tr class=" pb-0">
-                                                    <td class="serial">5.</td>
-                                                    <td class="avatar pb-0">
-                                                        <div class="round-img">
-                                                            <a href="#"><img class="rounded-circle" src="images/avatar/6.jpg" alt=""></a>
-                                                        </div>
-                                                    </td>
-                                                    <td> #5465 </td>
-                                                    <td>  <span class="name">Johnny Stephens</span> </td>
-                                                    <td> <span class="product">Monitor</span> </td>
-                                                    <td><span class="count">250</span></td>
-                                                    <td>
-                                                        <span class="badge badge-complete">Complete</span>
-                                                    </td>
-                                                </tr>
+                                                @foreach($getTodayBooking as $key => $value)
+                                                    <tr>
+                                                        <td class="serial">{{ $key + 1 }}</td>
+                                                        <td> {{ $value->room->name }}</td>
+                                                        <td> {{ $value->time_in->format('H:i') }}</td>
+                                                        <td> {{ $value->time_out->format('H:i') }}</td>
+                                                        <td> {{ $value->booker }}</td>
+                                                        <td> {{ $value->department->name }}</td>
+                                                        <td>
+                                                            {{ $value->purpose }}
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div> <!-- /.table-stats -->

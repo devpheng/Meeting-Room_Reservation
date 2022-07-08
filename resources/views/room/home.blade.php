@@ -105,7 +105,7 @@
             }
 
             .bd-pink-wrap{
-                border: 2px solid #f37fa9;
+                box-shadow: rgb(0 0 0 / 24%) 0px 0px 20px;
                 margin: 20px;
                 border-radius: 10px;
             }
@@ -140,6 +140,14 @@
             .card-border .card-body-bg-danger{
                 background-color:#f0675d;
             }
+            .box-badge-bg-available i{
+                color: bisque;
+                border: 1px solid #000;
+            }
+            .box-badge-bg-unavailable i{
+                color: #f0675d;
+                border: 1px solid #000;
+            }
             /*--thank you pop ends here--*/
         </style>
     </head>
@@ -167,25 +175,27 @@
                                             <label>Time In </label>
                                             <select name="time_in" id="time_in_select" class="form-control">
                                                 @foreach (Config::get('times') as $index => $value)
-                                                    @if(!$loop->last)
-                                                        <option value="{{ $value }}" id="timeIn-{{ $index }}" @if($setTimeIn == $value) selected @endif>{{ $value }}</option>
+                                                    @if(!$loop->last && $currentDateTimeIn->format('Hi') < str_replace(':', '', $value))
+                                                        <option value="{{ $value }}" id="timeIn-{{ $index }}" @if($setTimeIn == $value) selected @endif @if($currentDateTimeIn->format('Hi') > str_replace(':', '', $value)) disabled="disabled" @endif>{{ $value }}</option>
                                                     @endif
                                                 @endforeach
+                                              
                                             </select>
                                         </div>
                                         <div class="col-6 col-xl-2 col-sm-6 py-3">
                                             <label>Time Out </label>
                                             <select name="time_out" id="time_out_select" class="form-control">
                                                 @foreach (Config::get('times') as $index => $value)
-                                                    @if(!$loop->first)
+                                                    @if(!$loop->first && $currentDateTimeOut->format('Hi') < str_replace(':', '', $value))
                                                         <option value="{{ $value }}" id="timeOut-{{ $index }}" @if($setTimeOut == $value) selected @endif>{{ $value }}</option>
                                                     @endif
                                                 @endforeach
+                                                
                                             </select>
                                         </div>
-                                        <div class="col-12 col-xl-1 py-3">
-                                            <label> Filter Rooms</label>
-                                            <button type="submit" class="btn btn-primary btn-search btn-sm form-control"><i class="fa-solid fa-magnifying-glass"></i>&nbsp; </button>
+                                        <div class="col-12 col-xl-2 py-3">
+                                            <label> Find Available Rooms</label>
+                                            <button type="submit" class="btn btn-primary btn-search btn-sm form-control" style="width:150px"><i class="fa-solid fa-magnifying-glass"></i>&nbsp; </button>
                                         </div>
                                     </div>
                                 </form>
@@ -202,6 +212,11 @@
                                 <div class="col-2">
                                     <div class="compass p-4">
                                         <img src="{{ asset('/images/compass.png') }}" width="200px"/>
+                                    </div>
+                                    <div class="note p-4">
+                                        <h4 class="py-3">Room Status</h4>
+                                        <p class="box-badge-bg-available m-0"><i class="fa-solid fa-square"></i> <span> Available Room </span></p>
+                                        <p class="box-badge-bg-unavailable"><i class="fa-solid fa-square"></i> <span> Unavailable Room </span></p>
                                     </div>
                                 </div>
                                 <div class="col-8 bd-pink-wrap">
@@ -274,7 +289,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-2">
+                                <div class="col-1 p-0">
+                                    
                                 </div>
                             </div> <!-- /.row -->
                         </div>
@@ -523,6 +539,7 @@
                 format:'Y-m-d',
                 formatDate:'Y-m-d',
                 minDate:'-1970/01/01', // yesterday is minimum date
+                
             });
 
             $(".book-modal").click(function(){
@@ -661,7 +678,6 @@
                     }
                 })
             });
-            
         </script>
     </body>
 </html>

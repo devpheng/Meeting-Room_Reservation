@@ -100,7 +100,9 @@ class RoomController extends Controller
             'getRooms' => $setRooms,
             'listBookings' => $listBookings,
             'macAddr' => $macAddr,
-            'checkMeetingFinished' => $checkMeetingFinished
+            'checkMeetingFinished' => $checkMeetingFinished,
+            'currentDateTimeIn' => $currentDateTimeIn,
+            'currentDateTimeOut' => $currentDateTimeOut
         ]);
     }
 

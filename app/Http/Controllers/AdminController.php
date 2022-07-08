@@ -31,13 +31,20 @@ class AdminController extends Controller
         $currentDate =  Carbon::now();
         $countAllBooking = Booking::count();
         $countTodayBooking = Booking::whereDate('time_in', Carbon::today())->count();
+        $getTodayBooking = Booking::whereDate('time_in', Carbon::today())
+            ->with('room')
+            ->with('department')
+            ->orderBy('time_in', 'ASC')
+            ->get();
         $countDepartment = Department::count();
         $countRoom = Room::count();
         return  view('admin.index', [
             'countAllBooking' => $countAllBooking,
             'countTodayBooking' => $countTodayBooking,
             'countDepartment' => $countDepartment,
-            'countRoom' => $countRoom
+            'countRoom' => $countRoom,
+            'currentDate' => $currentDate,
+            'getTodayBooking' => $getTodayBooking
         ]);
     }
 }
