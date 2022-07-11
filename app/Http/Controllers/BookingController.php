@@ -31,7 +31,7 @@ class BookingController extends Controller
     public function store(Request $request)
     {
         try {
-            $macAddr = substr(exec('getmac'), 0, 17);
+            $macAddr = $request->ip();
             $setTimeIn = $request->timeIn;
             $setTimeOut = $request->timeOut;
             $currentDateTime = Carbon::now();
@@ -79,7 +79,7 @@ class BookingController extends Controller
     {
         try {
             $bookingId = $request->id;
-            $macAddr = substr(exec('getmac'), 0, 17);
+            $macAddr = $request->ip();
             $booking = Booking::where('id', $bookingId)->where('mac_adress', $macAddr)->first();
             $booking->delete();
             return redirect()->back()->with('message-cancel','Booking was canceled Successful!');

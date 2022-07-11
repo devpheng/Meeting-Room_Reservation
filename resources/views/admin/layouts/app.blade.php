@@ -75,6 +75,20 @@
                     <li class="{{ (request()->is('admin/department')) ? 'active' : '' }}">
                         <a href="{{ route('admin.department.index') }}"><i class="menu-icon fa-solid fa-building"></i> Departments</a>
                     </li>
+                    <li class="menu-item-has-children dropdown {{ (request()->is('admin/car')) ? 'active show' : '' }}{{ (request()->is('admin/car/create')) ? 'active show' : '' }}">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="{{ (request()->is('admin/car')) ? 'true' : 'false' }}{{ (request()->is('admin/car/creat')) ? 'true' : 'false' }}"> <i class="menu-icon fa-solid fa-car-rear"></i>Cars</a>
+                        <ul class="sub-menu children dropdown-menu {{ (request()->is('admin/car')) ? 'show' : '' }} {{ (request()->is('admin/car/create')) ? 'show' : '' }}">
+                            <li><i class="fa-solid fa-list"></i><a href="{{ route('admin.car.index') }}">list Cars</a></li>
+                            <li><i class="fa-solid fa-file-circle-plus"></i><a href="{{ route('admin.car.create') }}">Add New Car</a></li>
+                        </ul>
+                    </li>
+                    <li class="menu-item-has-children dropdown {{ (request()->is('admin/driver')) ? 'active show' : '' }}{{ (request()->is('admin/driver/create')) ? 'active show' : '' }}">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="{{ (request()->is('admin/driver')) ? 'true' : 'false' }}{{ (request()->is('admin/driver/creat')) ? 'true' : 'false' }}"> <i class="menu-icon fa-solid fa-id-card"></i>Driver</a>
+                        <ul class="sub-menu children dropdown-menu {{ (request()->is('admin/driver')) ? 'show' : '' }} {{ (request()->is('admin/driver/create')) ? 'show' : '' }}">
+                            <li><i class="fa-solid fa-list"></i><a href="{{ route('admin.driver.index') }}">list Drivers</a></li>
+                            <li><i class="fa-solid fa-file-circle-plus"></i><a href="{{ route('admin.driver.create') }}">Add New Driver</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </div><!-- /.navbar-collapse -->
         </nav>

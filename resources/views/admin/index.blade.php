@@ -111,7 +111,7 @@
                                         <th>ROOM NAME</th>
                                         <th>TIME IN</th>
                                         <th>TIME OUT</th>
-                                        <th>BOOKING BY</th>
+                                        <th>BOOKED BY</th>
                                         <th>DEPARTMENT</th>
                                         <th>PURPOSE</th>
                                         <th>ACTION</th>

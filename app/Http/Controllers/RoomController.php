@@ -17,7 +17,7 @@ class RoomController extends Controller
      */
     public function index(Request $request)
     {
-        $macAddr = substr(exec('getmac'), 0, 17);
+        $macAddr = $request->ip();
         $checkFinished = false;
         $checkSystemBooking = false;
         $getMeetingRoom = array();
@@ -91,9 +91,10 @@ class RoomController extends Controller
             }
         }
 
-        if((Carbon::parse($getDate)->format('D') == 'Tue' || Carbon::parse($getDate)->format('D') == 'Fri') && ($getTimeInH <= '12')){
+        if((Carbon::parse($getDate)->format('D') == 'Tue' || Carbon::parse($getDate)->format('D') == 'Fri') && ($setTimeIn <= '12')){
             $checkSystemBooking = true;
         }
+        
         return view('room.home', [
             'date' => $getDate,
             'setTimeIn' => $setTimeIn,
