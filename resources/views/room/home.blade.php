@@ -175,8 +175,14 @@
                                             <label>Time In </label>
                                             <select name="time_in" id="time_in_select" class="form-control">
                                                 @foreach (Config::get('times') as $index => $value)
-                                                    @if(!$loop->last && $currentDateTimeIn->format('Hi') < str_replace(':', '', $value))
-                                                        <option value="{{ $value }}" id="timeIn-{{ $index }}" @if($setTimeIn == $value) selected @endif @if($currentDateTimeIn->format('Hi') > str_replace(':', '', $value)) disabled="disabled" @endif>{{ $value }}</option>
+                                                    @if($setTimeDisplay)
+                                                        @if(!$loop->last && $currentDateTimeIn->format('Hi') < str_replace(':', '', $value))
+                                                            <option value="{{ $value }}" id="timeIn-{{ $index }}" @if($setTimeIn == $value) selected @endif>{{ $value }}</option>
+                                                        @endif
+                                                    @else
+                                                        @if(!$loop->last)
+                                                            <option value="{{ $value }}" id="timeIn-{{ $index }}" @if($setTimeIn == $value) selected @endif>{{ $value }}</option>
+                                                        @endif
                                                     @endif
                                                 @endforeach
                                               
@@ -186,17 +192,24 @@
                                             <label>Time Out </label>
                                             <select name="time_out" id="time_out_select" class="form-control">
                                                 @foreach (Config::get('times') as $index => $value)
-                                                    @if(!$loop->first && $currentDateTimeOut->format('Hi') < str_replace(':', '', $value))
-                                                        <option value="{{ $value }}" id="timeOut-{{ $index }}" @if($setTimeOut == $value) selected @endif>{{ $value }}</option>
+
+                                                    @if($setTimeDisplay)
+                                                        @if(!$loop->first && $currentDateTimeOut->format('Hi') < str_replace(':', '', $value))
+                                                            <option value="{{ $value }}" id="timeOut-{{ $index }}" @if($setTimeOut == $value) selected @endif>{{ $value }}</option>
+                                                        @endif
+                                                    @else
+                                                        @if(!$loop->first)
+                                                            <option value="{{ $value }}" id="timeOut-{{ $index }}" @if($setTimeOut == $value) selected @endif>{{ $value }}</option>
+                                                        @endif
                                                     @endif
                                                 @endforeach
                                                 
                                             </select>
                                         </div>
-                                        <div class="col-12 col-xl-2 py-3">
+                                        {{-- <div class="col-12 col-xl-2 py-3">
                                             <label> Find Available Rooms</label>
                                             <button type="submit" class="btn btn-primary btn-search btn-sm form-control" style="width:150px"><i class="fa-solid fa-magnifying-glass"></i>&nbsp; </button>
-                                        </div>
+                                        </div> --}}
                                     </div>
                                 </form>
                             </div>
@@ -207,7 +220,7 @@
                 <div class="row block-book">
                     <div class="col-lg-12">
                         <div class="card">
-                            <h2 class="text-sm-center mt-3 head-title"> MAP LAYOUT</h2>
+                            <h2 class="text-sm-center mt-3 head-title"> ROOM MAP</h2>
                             <div class="row">
                                 <div class="col-2">
                                     <div class="compass p-4">
@@ -279,7 +292,7 @@
                                                     <div class="card-body d-flex justify-content-center align-items-center">
                                                         <div class="mx-auto d-block">
                                                             <h3 class="text-center"><i class="fa-solid fa-book"></i></h3>
-                                                            <h5 class="text-sm-center mt-2 mb-1"> library room</h5>
+                                                            <h5 class="text-sm-center mt-2 mb-1"> LIBRARY ROOM</h5>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -438,7 +451,7 @@
                                                                     <tr>
                                                                         <th>Time In</th>
                                                                         <th>Time Out</th>
-                                                                        <th>Booking By</th>
+                                                                        <th>Booked By</th>
                                                                         <th>Department</th>
                                                                     </tr>
                                                                 </thead>
@@ -704,8 +717,9 @@
                     let timeOutSelect = "";
                     if (selectedDate != today) {
                         for(let i=0; i<18; i++) {
-                            timeInSelect += `<option value="${timeIn[i]}" id="timeIn-${i}}">${timeIn[i]}</option>`;
-                            timeOutSelect += `<option value="${timeOut[i]}" id="timeOut-${i}}">${timeOut[i]}</option>`;
+                            let selected = i == 0 ? 'selected' : '';
+                            timeInSelect += `<option value="${timeIn[i]}" id="timeIn-${i}}" ${selected}>${timeIn[i]}</option>`;
+                            timeOutSelect += `<option value="${timeOut[i]}" id="timeOut-${i}}" ${selected}>${timeOut[i]}</option>`;
                         }
                         $("#time_in_select").html(timeInSelect);
                         $("#time_out_select").html(timeOutSelect);
@@ -713,10 +727,13 @@
                         $("#time_in_select").html(timeInOption);
                         $("#time_out_select").html(timeOutOption);
                     }
+                    
+
+                    $('#add-blog-post-form').submit();
                 });
 
                 $('#cancel-success').modal({backdrop: 'static', keyboard: false});
-                $("#time_in_select").change(function(){
+                $("body").on('change', '#time_in_select', function(){
                     let getValue = $('#time_in_select').find(":selected").text();
                     let getOutId = $("#time_out_select option[value='"+getValue+"']").attr("id");
                     $("#time_out_select option").removeAttr("selected");
@@ -727,22 +744,30 @@
                     }else{
                         $("#time_out_select option[id=timeOut-1]").attr("selected", "selected");
                     }
+
+                    $('#add-blog-post-form').submit();
                 })
 
-                $("#time_out_select").change(function(){
+                $("body").on('change', '#time_out_select', function(){
                     let getIdIn = $('#time_in_select').find(":selected").text();
                     let getIdOut = $('#time_out_select').find(":selected").text();
-                    let getOutId = $("#time_out_select option[value='"+getIdIn+"']").attr("id");
+                    let getOutId = $('#time_out_select').find(":selected").attr("id");
                     let resultIn = getIdIn.replace(":", "");
                     let resultOut = getIdOut.replace(":", "");
                     let result = getOutId.replace("timeOut-", "");
                     if(Number(resultIn) >= Number(resultOut)){
-                        result = Number(result) + 1;
+                        result = Number($('#time_in_select').find(":selected").attr("id").replace("timeIn-", "")) + 1;
+                        console.log(result);
+                        // result = Number(() + 1);
+                        // console.log(result);
                         $("#time_out_select option").removeAttr("selected");
                         $("#time_out_select option").prop("selected", false)
                         $("#time_out_select option[id=timeOut-"+result+"]").attr("selected", "selected");
                         alert("Sorry can't select time out less than time in !!!");
+                        return;
                     }
+                    
+                    $('#add-blog-post-form').submit();
                 })
             });
         </script>

@@ -6,7 +6,7 @@
                     <b>{{ $getRooms['name'] }}</b>
                 </h5>
                 <div class="location text-sm-center p-1">
-                    <i class="fa-solid fa-users"></i> Meeting from 08:00 - 12:00, System Auto Booking 
+                    <i class="fa-solid fa-users"></i> Meeting from 08:00 - 12:00, Top management meeting 
                 </div>
                 <div class="d-btn p-1 d-flex justify-content-center align-items-center">
                     <button type="button" class="btn btn-success  btn-sm mr-2" data-toggle="modal" data-target="#lists-room-modal-{{ $getRooms['id'] }}">View All Booking</button>
