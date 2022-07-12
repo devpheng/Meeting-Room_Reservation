@@ -126,7 +126,7 @@
                         <div class="row justify-content-center">
                             <div class="col-lg-3 col-md-6">
                                 <div class="card">
-                                    <a href="{{ route('booking.room.index') }}">
+                                    {{-- <a href="{{ route('booking.room.index') }}"> --}}
                                         <div class="card-body btn-card">
                                             <div class="stat-widget-five">
                                                 <div class="stat-icon dib">
@@ -134,12 +134,13 @@
                                                 </div>
                                                 <div class="stat-content">
                                                     <div class="text-left dib">
-                                                        <div class="stat-text"><span>CAR BOOKING</span></div>
+                                                        <div class="stat-text"><span>COMING SOON</span></div>
+                                                        
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </a>
+                                    {{-- </a> --}}
                                 </div>
                             </div>
                         </div>

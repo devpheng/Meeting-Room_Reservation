@@ -158,6 +158,9 @@
             <div class="animated fadeIn">
                 <div class="row justify-content block-filter">
                     <div class="col-lg-12">
+                        <a href="{{ route('home') }}"><i class="fa-solid fa-arrow-left"></i> Back</a>
+                    </div>
+                    <div class="col-lg-12">
                         <div class="card main-top-bg">
                             <div class="card-body">
                                 <input type="hidden" value="{{ route('booking.room.store') }}" id="url-store"/>

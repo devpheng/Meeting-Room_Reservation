@@ -12,6 +12,16 @@ use Carbon\Carbon;
 class BookingController extends Controller
 {
     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -59,7 +69,7 @@ class BookingController extends Controller
     {
         try {
             $bookingId = $request->id;
-            $macAddr = substr(exec('getmac'), 0, 17);
+            $macAddr = $request->ip();
             $booking = Booking::where('id', $bookingId)->first();
             $booking->delete();
             return redirect()->back()->with('message-cancel','Booking was canceled Successful!');

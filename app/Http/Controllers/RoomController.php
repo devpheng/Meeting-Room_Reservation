@@ -17,7 +17,7 @@ class RoomController extends Controller
      */
     public function index(Request $request)
     {
-        $macAddr = substr(exec('getmac'), 0, 17);
+        $macAddr = $request->ip();
         $checkFinished = false;
         $checkSystemBooking = false;
         $setTimeDisplay = false;
