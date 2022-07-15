@@ -15,24 +15,33 @@
                             <thead>
                                 <tr>
                                     <th class="serial">#</th>
-                                        <th>NAME</th>
-                                        <th>CAPACITY</th>
-                                        <th>DRIVER NAME</th>
-                                        <th>MONDAY WORK TIME</th>
-                                        <th>TUESDAY WORK TIME</th>
-                                        <th>WEDNESDAY WORK TIME</th>
-                                        <th>THURSDAY WORK TIME</th>
-                                        <th>FRIDAY WORK TIME</th>
-                                        <th>ACTION</th>
+                                        <th>Model</th>
+                                        <th>Seats</th>
+                                        <th>Driver</th>
+                                        <th>Plate Number</th>
+                                        <th>Working Time From</th>
+                                        <th>Working Time To</th>
+                                        <th>Rest Day</th>
+                                        <th>Photo</th>
+                                        <th>Action</th>
                                     </tr>
                                     </thead>
                                         <tbody>
                                             @foreach($cars as $key => $value)
                                             <tr>
-                                                <td class="serial">{{ $key + 1 }}</td>
-                                                <td> {{ $value->name }}</td>
+                                                <td class="serial">{{ $value->number }}</td>
+                                                <td> {{ $value->model }}</td>
+                                                <td> {{ $value->capacity }}</td>
+                                                <td> {{ $value->driver->name }}</td>
+                                                <td> {{ $value->plat_number }}</td>
+                                                <td> {{ $value->working_time_from }}</td>
+                                                <td> {{ $value->working_time_to }}</td>
+                                                <td> {{ $value->rest_day }}</td>
+                                                <td> 
+                                                    <img src="{{ asset('storage/files/'.$value->image) }}" style="max-width: 120px"/>
+                                                </td>
                                                 <td>
-                                                    <button type="button" class="btn btn-outline-primary btn-sm btn-update" data-id="{{ $value->id }}" data-value="{{ $value->name }}"><i class="fa-solid fa-file-pen"></i>&nbsp; Edit</button>
+                                                    <a class="btn btn-outline-primary btn-sm btn-update" href="{{ route('admin.car.edit', $value->id) }}"><i class="fa-solid fa-file-pen"></i>&nbsp; Edit</a>
                                                 </td>
                                             </tr>
                                             @endforeach
@@ -69,17 +78,5 @@
         </div>
         <!-- /#event-modal -->
         @push('scripts')
-            <script>
-                    jQuery(document).ready(function($) {
-                        $('.btn-update').click(function(){
-                            $('#room-update-modal').modal({
-                                backdrop: 'static',
-                                keyboard: false
-                            });
-                            $('#room-id').val($(this).attr('data-id'));
-                            $('#room-name').val($(this).attr('data-value'));
-                        })
-                    })
-            </script>
         @endpush
 @endsection

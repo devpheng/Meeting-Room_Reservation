@@ -3,24 +3,25 @@
 @section('content')
 <!-- Booking -->
 <div class="Booking">
-    <form id="update-room" action="{{ route('admin.car.store') }}" method="POST" enctype="multipart/form-data">
+    <form id="update-room" action="{{ route('admin.car.update') }}" method="POST" enctype="multipart/form-data">
+    <input type="hidden" id="id" name="id" value="{{ $car->number }}">
     @csrf
     <div class="row">
         <div class="col-xl-8">
              
                 <div class="card">
-                    <div class="card-header"><strong>Register Car</strong></div>
+                    <div class="card-header"><strong>Edit Car</strong></div>
                     <div class="card-body card-block">
                         <div class="form-group">
                             <label for="number" class=" form-control-label">Number</label>
-                            <input type="text" id="number" name="number" placeholder="Enter your car number" class="form-control">
+                            <input type="text" id="number" name="number" placeholder="Enter your car number" class="form-control" value="{{ $car->number }}">
                             @error('number')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
                         <div class="form-group">
                             <label for="model" class=" form-control-label">Model</label>
-                            <input type="text" id="model" name="model" placeholder="Enter your car model" class="form-control">
+                            <input type="text" id="model" name="model" placeholder="Enter your car model" class="form-control" value="{{ $car->model }}">
                             @error('model')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
@@ -30,7 +31,7 @@
                             <select name="driver_id" id="driver" name="driver_id" class="form-control">
                                 <option value="0">Please select</option>
                                 @foreach($drivers as $key => $value)
-                                    <option value="{{ $key }}">{{ $value }}</option>
+                                    <option value="{{ $key }}" @if ($car->driver->name == $value) selected @endif>{{ $value }}</option>
                                 @endforeach
                             </select>
                             @error('driver_id')
@@ -39,14 +40,14 @@
                         </div>
                         <div class="form-group">
                             <label for="plat_number" class=" form-control-label">Plat Number</label>
-                            <input type="text" id="plat_number" name="plat_number" placeholder="Enter your car plat number" class="form-control">
+                            <input type="text" id="plat_number" name="plat_number" placeholder="Enter your car plat number" class="form-control" value="{{ $car->plat_number }}">
                             @error('plat_number')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
                         <div class="form-group">
                             <label for="capacity" class=" form-control-label">Capacity</label>
-                            <input type="number" id="capacity" name="capacity" placeholder="Enter your car capacity" class="form-control">
+                            <input type="number" id="capacity" name="capacity" placeholder="Enter your car capacity" class="form-control" value="{{ $car->capacity }}">
                             @error('capacity')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
@@ -54,7 +55,7 @@
                         <div class="form-group">
                             <label for="image" class=" form-control-label">Image</label>
                             <input type="file" id="image" name="image" class="form-control-file">
-                            <img src="" id="preview-image" class="img-thumbnail" style="max-width: 300px"/>
+                            <img src="{{ asset('storage/files/'.$car->image) }}" id="preview-image" class="img-thumbnail" style="max-width: 300px"/>
                             @error('image')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
@@ -70,9 +71,9 @@
                                 <div class="form-group">
                                     <label for="working_time_from" class=" form-control-label">Working Time From</label>
                                     <select name="working_time_from" id="working_time_from" class="form-control">
-                                        <option value="7:30">7:30</option>
+                                        <option value="7:30" @if ($car->working_time_from == '7:30') selected @endif>7:30</option>
                                         @for ($i = 7; $i < 20; $i++)
-                                            <option value="{{ $i }}:00">{{ $i }}:00</option>
+                                            <option value="{{ $i }}:00" @if ($car->working_time_from == $i . ':00') selected @endif>{{ $i }}:00</option>
                                         @endfor
                                     </select>
                                     @error('working_time_from')
@@ -85,7 +86,7 @@
                                     <label for="working_time_to" class=" form-control-label">Working Time To</label>
                                     <select name="working_time_to" id="working_time_to" class="form-control">
                                         @for ($i = 8; $i < 20; $i++)
-                                            <option value="{{ $i }}:00">{{ $i }}:00</option>
+                                            <option value="{{ $i }}:00" @if ($car->working_time_to == $i . ':00') selected @endif>{{ $i }}:00</option>
                                         @endfor
                                     </select>
                                     @error('tuesday_from')
@@ -97,8 +98,8 @@
                                 <div class="form-group">
                                     <label for="rest_day" class=" form-control-label">Rest Day</label>
                                     <select name="rest_day" id="rest_day" class="form-control">
-                                        <option value="saturday">Saturday</option>
-                                        <option value="sunday">Sunday</option>
+                                        <option value="saturday" @if ($car->rest_day == 'saturday') selected @endif>Saturday</option>
+                                        <option value="sunday" @if ($car->rest_day == 'sunday') selected @endif>Sunday</option>
                                     </select>
                                     @error('rest_day')
                                         <div class="text-danger">{{ $message }}</div>
@@ -115,7 +116,7 @@
             <div class="card">
                 <div class="card-header"><strong>Work Schedule</strong></div>
                 <div class="card-body card-block">
-                    <button type="submit" class="btn btn-outline-primary m-3" id="save">Save</button>
+                    <button type="submit" class="btn btn-outline-primary m-3" id="save">Edit</button>
                     <button type="button" class="btn btn-outline-danger m-3" id="cancel">Cancel</button>
                 </div>
             </div>

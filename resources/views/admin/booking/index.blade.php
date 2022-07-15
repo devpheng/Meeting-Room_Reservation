@@ -83,6 +83,7 @@
                                     <th>TIME IN</th>
                                     <th>TIME OUT</th>
                                     <th>BOOKER</th>
+                                    <th>IP Address</th>
                                     <th>DEPARTMENT</th>
                                     <th>PURPOSE</th>
                                     <th>ACTION</th>
@@ -97,6 +98,7 @@
                                         <td> {{ $value->time_in->format('H:i') }}</td>
                                         <td> {{ $value->time_out->format('H:i') }}</td>
                                         <td> {{ $value->booker }}</td>
+                                        <td> {{ $value->mac_adress }}</td>
                                         <td> {{ $value->department->name }}</td>
                                         <td>
                                             {{ $value->purpose }}

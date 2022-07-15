@@ -158,9 +158,6 @@
             <div class="animated fadeIn">
                 <div class="row justify-content block-filter">
                     <div class="col-lg-12">
-                        <a href="{{ route('home') }}"><i class="fa-solid fa-arrow-left"></i> Back</a>
-                    </div>
-                    <div class="col-lg-12">
                         <div class="card main-top-bg">
                             <div class="card-body">
                                 <input type="hidden" value="{{ route('booking.room.store') }}" id="url-store"/>
@@ -456,6 +453,7 @@
                                                                         <th>Time Out</th>
                                                                         <th>Booked By</th>
                                                                         <th>Department</th>
+                                                                        <th>Purpose</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -466,6 +464,7 @@
                                                                                 <td><span class="time_out">{{ $valueBooking->time_out->format('H:i') }}</span></td>
                                                                                 <td><span class="booker">{{ $valueBooking->booker }}</span></td>
                                                                                 <td><span class="department">{{ $valueBooking->department->name }}</span></td>
+                                                                                <td><span class="purpose">{{ $valueBooking->purpose }}</span></td>
                                                                             </tr>
                                                                         @endif
                                                                     @endforeach

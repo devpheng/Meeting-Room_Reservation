@@ -6,7 +6,7 @@
                     <b>{{ $getRooms['name'] }}</b>
                 </h5>
                 <div class="location text-sm-center p-1">
-                    <i class="fa-solid fa-users"></i> Meeting from 08:00 - 12:00, Top management meeting 
+                    <i class="fa-solid fa-users"></i> Meeting from 08:00 - 12:00,<br/> Top management meeting 
                 </div>
                 <div class="d-btn p-1 d-flex justify-content-center align-items-center">
                     <button type="button" class="btn btn-success  btn-sm mr-2" data-toggle="modal" data-target="#lists-room-modal-{{ $getRooms['id'] }}">View All Booking</button>
@@ -48,7 +48,7 @@
                     <b>{{ $getRooms['name'] }}</b>
                 </h5>
                 <div class="location text-sm-center p-1">
-                    <i class="fa-solid fa-users"></i> Meeting from {{ $getMeetingRoom->time_in->format('H:i') }} - {{ $getMeetingRoom->time_out->format('H:i') }}, {{ $getMeetingRoom->department->name }}
+                    <i class="fa-solid fa-users"></i> Meeting from {{ $getMeetingRoom->time_in->format('H:i') }} - {{ $getMeetingRoom->time_out->format('H:i') }}, <br/>{{ $getMeetingRoom->department->name }}
                 </div>
                 <div class="d-btn p-1 d-flex justify-content-center align-items-center">
                     <button type="button" class="btn btn-success  btn-sm mr-2" data-toggle="modal" data-target="#lists-room-modal-{{ $getRooms['id'] }}">View All Booking</button>
@@ -63,7 +63,7 @@
                 </h5>
                 @if($macAddr == $getBookingRoom->mac_adress) 
                     <div class="location text-sm-center p-1">
-                        <i class="fa-solid fa-circle-check text-success"></i> Booked from {{ $getBookingRoom->time_in->format('H:i') }} - {{ $getBookingRoom->time_out->format('H:i') }}, {{ $getBookingRoom->department->name }}
+                        <i class="fa-solid fa-circle-check text-success"></i> Booked from {{ $getBookingRoom->time_in->format('H:i') }} - {{ $getBookingRoom->time_out->format('H:i') }}, <br/>{{ $getBookingRoom->department->name }}
                     </div>
                     <div class="d-btn p-1 d-flex justify-content-center align-items-center">
                         <button type="button" class="btn btn-success  btn-sm mr-2" data-toggle="modal" data-target="#lists-room-modal-{{ $getRooms['id'] }}">View All Booking</button>
@@ -71,7 +71,7 @@
                     </div>
                 @else 
                     <div class="location text-sm-center p-1">
-                        <i class="fa-solid fa-circle-xmark text-danger"></i> Booked from {{ $getBookingRoom->time_in->format('H:i') }} - {{ $getBookingRoom->time_out->format('H:i') }}, {{ $getBookingRoom->department->name }}
+                        <i class="fa-solid fa-circle-xmark text-danger"></i> Booked from {{ $getBookingRoom->time_in->format('H:i') }} - {{ $getBookingRoom->time_out->format('H:i') }}, <br/>{{ $getBookingRoom->department->name }}
                     </div>
                     <div class="d-btn p-1 d-flex justify-content-center align-items-center">
                         <button type="button" class="btn btn-success  btn-sm mr-2" data-toggle="modal" data-target="#lists-room-modal-{{ $getRooms['id'] }}">View All Booking</button>

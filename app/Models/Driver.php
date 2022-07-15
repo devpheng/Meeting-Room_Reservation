@@ -19,4 +19,9 @@ class Driver extends Model
         }
         return '';
     }
+
+    public function car()
+    {
+        return $this->hasOne('App\Models\Car');
+    }
 }

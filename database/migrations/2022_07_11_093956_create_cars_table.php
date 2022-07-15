@@ -15,17 +15,15 @@ return new class extends Migration
     {
         Schema::create('cars', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->integer('brand');
+            $table->string('number');
+            $table->string('model');
             $table->integer('driver_id');
             $table->string('plat_number')->nullable();
             $table->string('capacity')->nullable();
             $table->string('image')->nullable();
-            $table->string('monday_time')->nullable();
-            $table->string('tuesday_time')->nullable();
-            $table->string('wednesday_time')->nullable();
-            $table->string('thursday_time')->nullable();
-            $table->string('friday_time')->nullable();
+            $table->string('working_time_from')->nullable();
+            $table->string('working_time_to')->nullable();
+            $table->string('rest_day')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

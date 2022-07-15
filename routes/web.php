@@ -59,6 +59,8 @@ Route::group(['prefix'=>'admin','as'=>'admin.'], function () {
         Route::get('/', [AdminCarController::class, 'index'])->name('index');
         Route::get('/create', [AdminCarController::class, 'create'])->name('create');
         Route::post('/store', [AdminCarController::class, 'store'])->name('store');
+        Route::get('/{id}/edit', [AdminCarController::class, 'edit'])->name('edit');
+        Route::post('/update', [AdminCarController::class, 'update'])->name('update');
     });
 
     Route::group(['prefix'=>'driver','as'=>'driver.'], function(){

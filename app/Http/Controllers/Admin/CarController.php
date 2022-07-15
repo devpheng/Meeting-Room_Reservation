@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Car;
 use App\Models\Driver;
 use \App\Http\Requests\StoreCarRequest;
+use \App\Http\Requests\UpdateCarRequest;
 
 class CarController extends Controller
 {
@@ -55,27 +56,75 @@ class CarController extends Controller
     public function store(StoreCarRequest $request)
     {
         try {
-            $monday_time = '';
-            $tuesday_time = '';
-            $wednesday_time = '';
-            $thursday_time = '';
-            $friday_time = '';
             $car = new Car();
-            $car->name = $request->name;
-            $car->brand = $request->brand;
+            $car->number = $request->number;
+            $car->model = $request->model;
             $car->driver_id = $request->driver_id;
             $car->plat_number = $request->plat_number;
-            $car->capacity = $request->plat_number;
-            $car->monday_time = $monday_time;
-            $car->tuesday_time = $tuesday_time;
-            $car->wednesday_time = $wednesday_time;
-            $car->thursday_time = $thursday_time;
-            $car->friday_time = $friday_time;
-            $car->image = '';
+            $car->capacity = $request->capacity;
+            $car->working_time_from = $request->working_time_from;
+            $car->working_time_to = $request->working_time_to;
+            $car->rest_day = $request->rest_day;
+            $path = $request->file('image')->store('public/files/images');
+            $name = explode('/', $path);
+            $car->image = "images/" . end($name);
+
             $car->save();
+            
+            $drivers = Driver::pluck('name', 'id');
+            return view('admin.car.create', [
+                'drivers' => $drivers
+            ]);
         } catch (\Exception $e) {
             return $e->getMessage();
         }
+    }
+
+    public function edit(Request $request)
+    {
+        $car = Car::findOrFail($request->id);
+        $drivers = Driver::pluck('name', 'id');
+        return view('admin.car.edit', [
+            'drivers' => $drivers,
+            'car' => $car
+        ]);
+    }
+
+    public function update(UpdateCarRequest $request)
+    {
+        // dd(public_path());
+
+        $car = Car::findOrFail($request->id);
+
+        if($request->file('image') != null) {        
+            $path = 'storage/files/';
+   
+            if($car->image != '' && $car->image != null){
+                $file_old = $path.$car->image;
+                unlink($file_old);
+
+                $path = $request->file('image')->store('public/files/images');
+                $name = explode('/', $path);
+                $car->image = "images/" . end($name);
+            }
+        }
+
+        $car->number = $request->number;
+        $car->model = $request->model;
+        $car->driver_id = $request->driver_id;
+        $car->plat_number = $request->plat_number;
+        $car->capacity = $request->capacity;
+        $car->working_time_from = $request->working_time_from;
+        $car->working_time_to = $request->working_time_to;
+        $car->rest_day = $request->rest_day;
+
+        $car->save();
+
+        $cars = Car::get();
+        return view('admin.car.index', [
+            'cars' => $cars
+        ]);
+       
     }
 
 }
