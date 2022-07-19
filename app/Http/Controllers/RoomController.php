@@ -92,7 +92,7 @@ class RoomController extends Controller
             }
         }
 
-        if((Carbon::parse($getDate)->format('D') == 'Tue' || Carbon::parse($getDate)->format('D') == 'Fri') && ($setTimeIn <= '12')){
+        if((Carbon::parse($getDate)->format('D') == 'Mon' || Carbon::parse($getDate)->format('D') == 'Fri') && ($setTimeIn <= '12')){
             $checkSystemBooking = true;
         }
         if(Carbon::parse($getDate)->lte($currentDateTimeIn)){
