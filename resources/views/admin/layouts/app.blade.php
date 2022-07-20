@@ -89,6 +89,14 @@
                             <li><i class="fa-solid fa-file-circle-plus"></i><a href="{{ route('admin.driver.create') }}">Add New Driver</a></li>
                         </ul>
                     </li>
+
+                    <li class="menu-item-has-children dropdown {{ (request()->is('admin/stationery')) ? 'active show' : '' }}{{ (request()->is('admin/stationery/create')) ? 'active show' : '' }}">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="{{ (request()->is('admin/stationery')) ? 'true' : 'false' }}{{ (request()->is('admin/stationery/creat')) ? 'true' : 'false' }}"> <i class="menu-icon fa-solid fa-id-card"></i>Stationery</a>
+                        <ul class="sub-menu children dropdown-menu {{ (request()->is('admin/stationery')) ? 'show' : '' }} {{ (request()->is('admin/stationery/create')) ? 'show' : '' }}">
+                            <li><i class="fa-solid fa-list"></i><a href="{{ route('admin.stationery.index') }}">list Stationeries</a></li>
+                            <li><i class="fa-solid fa-list"></i><a href="{{ route('admin.request.index') }}">Requests</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </div><!-- /.navbar-collapse -->
         </nav>
