@@ -9,6 +9,8 @@ class Request extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['request_by', 'ip_address', 'department_id', 'stationery_id', 'quantity'];
+
     public function department()
     {
         return $this->belongsTo('App\Models\Department');

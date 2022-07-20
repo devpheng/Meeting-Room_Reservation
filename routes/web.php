@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\StationeryController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Admin\RoomController as AdminRoomController;
@@ -32,6 +33,8 @@ Auth::routes();
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
+Route::get('/stationery', [StationeryController::class, 'index'])->name('stationery');
+Route::post('/stationerys', [StationeryController::class, 'request'])->name('stationery.request');
 
 Route::group(['prefix'=>'bookings','as'=>'booking.'], function(){
     Route::group(['prefix'=>'room','as'=>'room.'], function(){

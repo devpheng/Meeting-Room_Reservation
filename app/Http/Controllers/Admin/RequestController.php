@@ -12,8 +12,7 @@ class RequestController extends Controller
 {
     public function index(Request $request)
     {
-        // $macAddr = $request->ip();
-        $requests = RequestModel::get();
+        $requests = RequestModel::orderByDesc('created_at')->get();
         
         return view('admin.request.index', [
             'requests' => $requests
