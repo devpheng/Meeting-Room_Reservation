@@ -11,12 +11,16 @@
                     @if(session()->has('message'))
                         <div class="alert alert-success"> {{ session('message') }} </div>
                     @endif
+                    @if(session()->has('message_error'))
+                        <div class="alert alert-danger"> {{ session('message_error') }} </div>
+                    @endif
                     {{-- <div class="pt-4">
                         <a class="btn btn-success" style="color: white" href="{{ route('admin.stationery.create') }}">Add New</a>
                     </div> --}}
                 </div>
                 <div class="card-body">
-                    <div class="table-stats order-table ov-h">
+                    <div class="table-stats ov-h">
+                        <a href="javascript:void(0)" class="btn btn-success mb-4" id="btn-export-daily">Export Daily Report</a>
                         <table class="table" id="request">
                             <thead>
                                 <tr>
@@ -86,12 +90,57 @@
         </div>
         <!-- /#event-modal -->
         @push('scripts')
-        
+            <script type="text/javascript" src="{{ asset('/assets/js/xlsx.full.min.js') }}"></script>
             <script src="{{ asset('/assets/js/datatables.min.js') }}"></script>
             <script>
-                    jQuery(document).ready(function($) {
-                        $('#request').DataTable();
+                jQuery(document).ready(function($) {
+                    $('#request').DataTable();
+
+                    $('#btn-export-daily').on('click', function() {
+                        // var data = {
+                        //     'username': $("#keyword_type").val() == "username" ? ($("#keyword").val().length > 0 ? $("#keyword").val() : null) : null,
+                        //     'dateRange': $('input[name="date-range"]').val() == '' ? null : $('input[name="date-range"]').val()
+                        // }
+                        var data = {};
+                        $.getJSON('{{ route('admin.request.daily') }}',
+                            data,
+                            function(data) {
+                                var createXLSLFormatObj = [];
+
+                                /* XLS Head Columns */
+                                var xlsHeader = ["No.", "Department", "Description/Code", "Quantity"];
+
+                                /* XLS Rows Data */
+                                // var xlsRows = data.data.activities;
+
+                                createXLSLFormatObj.push(xlsHeader);
+                                $.each(data, function(index, value) {
+                                    var innerRowData = [];
+                                    var columns = [index+1, value.name, value.code, value.total];
+                                    $.each(columns, function(ind, val) {
+                                        innerRowData.push(val);
+                                    });
+                                    createXLSLFormatObj.push(innerRowData);
+                                });
+
+
+                                /* File Name */
+                                var filename = "Daily Stationery Usage.xlsx";
+
+                                /* Sheet Name */
+                                var ws_name = "Sheet1";
+
+                                var wb = XLSX.utils.book_new(),
+                                ws = XLSX.utils.aoa_to_sheet(createXLSLFormatObj);
+
+                                /* Add worksheet to workbook */
+                                XLSX.utils.book_append_sheet(wb, ws, ws_name);
+
+                                /* Write workbook and Download */
+                                XLSX.writeFile(wb, filename);
+                            });
                     });
+                });
             </script>
         @endpush
 @endsection

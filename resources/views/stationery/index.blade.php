@@ -241,7 +241,7 @@
 
                         $('#stock').keyup(function(){
                             // console.log($(this).val());
-                            if($(this).val() > maxStock) {
+                            if(parseInt($(this).val()) > maxStock) {
                                 $(this).val(maxStock);
                             }
                         });

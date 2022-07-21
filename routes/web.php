@@ -90,7 +90,7 @@ Route::group(['prefix'=>'admin','as'=>'admin.'], function () {
         Route::get('/', [AdminRequestController::class, 'index'])->name('index');
         Route::get('/cancel/{id}/{stock}', [AdminRequestController::class, 'cancel'])->name('cancel');
         Route::get('/approve/{id}', [AdminRequestController::class, 'approve'])->name('approve');
-        // Route::get('/create', [AdminStationeryController::class, 'create'])->name('create');
+        Route::get('/daily', [AdminRequestController::class, 'daily'])->name('daily');
         // Route::post('/store', [AdminStationeryController::class, 'store'])->name('store');
         // Route::get('/edit/{id}', [AdminStationeryController::class, 'edit'])->name('edit');
         // Route::post('/update', [AdminStationeryController::class, 'update'])->name('update');

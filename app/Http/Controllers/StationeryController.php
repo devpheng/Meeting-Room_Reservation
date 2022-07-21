@@ -54,9 +54,9 @@ class StationeryController extends Controller
             'quantity' => $request->stock
         ]);
 
-        $stationery = Stationery::findOrFail($request->stationery_id);
-        $stationery->stock = $stationery->stock - $request->stock;
-        $stationery->save();
+        // $stationery = Stationery::findOrFail($request->stationery_id);
+        // $stationery->stock = $stationery->stock - $request->stock;
+        // $stationery->save();
 
         return redirect()->route('stationery')->with('message','Request successful!');
        

@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Request as RequestModel;
 use \App\Http\Requests\StationeryRequest;
 use App\Models\Stationery;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class RequestController extends Controller
 {
@@ -24,9 +26,9 @@ class RequestController extends Controller
     {
         try {
             $request = RequestModel::findOrfail($id);
-            $stationery = Stationery::findOrfail($request->stationery_id);
-            $stationery->stock = $stationery->stock + $stock;
-            $stationery->save();
+            // $stationery = Stationery::findOrfail($request->stationery_id);
+            // $stationery->stock = $stationery->stock + $stock;
+            // $stationery->save();
             $request->deleted_at = \now();
             $request->save();
             return redirect()->route('admin.request.index')->with('message','Cancel successful!');
@@ -39,63 +41,39 @@ class RequestController extends Controller
     {
         try {
             $request = RequestModel::findOrfail($id);
+            
+            $stationery = Stationery::findOrFail($request->stationery_id);
+
+            // dd($request->quantity . " " . $stationery->stock);
+
+            if($request->quantity > $stationery->stock) {
+                return redirect()->route('admin.request.index')->with('message_error','Product out of stock');
+            }
+
             $request->approved_at = \now();
             $request->save();
+
+            $stationery->stock = $stationery->stock - $request->quantity;
+            $stationery->save();
+
             return redirect()->route('admin.request.index')->with('message','Approve successful!');
         } catch (\Exception $e) {
             return $e->getMessage();
         }
     }
 
-    // public function create()
-    // {
-    //     // $macAddr = $request->ip();
-    //     $stationeries = Stationery::get();
-        
-    //     return view('admin.stationery.create', ['exist' => '']);
-    // }
+    public function daily()
+    {
+        $requests = DB::table('requests')
+                    ->select('stationeries.code', 'departments.name', DB::raw('sum(requests.quantity) as total'), 'requests.department_id', 'requests.stationery_id')
+                    ->join('departments', 'departments.id', '=', 'requests.department_id')
+                    ->join('stationeries', 'stationeries.id', '=', 'requests.stationery_id')
+                    ->whereDate('requests.created_at', Carbon::today())
+                    ->whereNotNull('requests.approved_at')
+                    ->groupBy(['requests.department_id', 'requests.stationery_id'])
+                    ->orderBy('stationeries.code')
+                    ->get();
 
-
-    // public function store(StationeryRequest $request)
-    // {
-    //     $stationery = Stationery::where('code', $request->code)->first();
-    //     if(!$stationery){
-    //         $stationery = Stationery::create([
-    //             'code' => $request->code,
-    //             'quantity' => $request->quantity,
-    //             'stock' => $request->stock,
-    //             'remark' => $request->remark
-    //         ]);
-    //     } else {
-    //         return view('admin.stationery.create', ['exist' => 'Stationery already exist']);
-    //     }
-    //     return view('admin.stationery.create', ['exist' => '']);
-    // }
-
-    // /**
-    //  * Display a listing of the resource.
-    //  *
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function edit($id)
-    // {
-    //     $stationery = Stationery::findOrfail($id);
-    //     return view('admin.stationery.edit', [
-    //         'stationery' => $stationery
-    //     ]);
-    // }
-
-    // public function update(StationeryRequest $request)
-    // {
-    //     try {
-    //         $stationery = Stationery::findOrfail($request->id);
-    //         $stationery->code = $request->code;
-    //         $stationery->quantity = $request->quantity;
-    //         $stationery->remark = $request->remark;
-    //         $stationery->save();
-    //         return redirect()->route('admin.stationery.index')->with('message','Update successful!');
-    //     } catch (\Exception $e) {
-    //         return $e->getMessage();
-    //     }
-    // }
+        return $requests;
+    }
 }
