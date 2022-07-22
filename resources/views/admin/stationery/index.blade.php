@@ -106,7 +106,7 @@
                                     var createXLSLFormatObj = [];
 
                                     /* XLS Head Columns */
-                                    var xlsHeader = ["No.", "Description/Code", "Stock Quantity", "Addition Stock Quantity", "Quantity", "New Stock (Date)", "Total Stock Quantity", "Stock Used (Previous Month)", "Total Stock Remain", "Remark"];
+                                    var xlsHeader = ["No.", "Description/Code", "Stock Quantity", "Addition Stock Quantity", "Quantity", "New Stock (Date)", "Total Stock Quantity", "Stock Used (Previous Month)", "Total Stock Remain", "Remark", "Amount Request Last 3 Month"];
 
                                     /* XLS Rows Data */
                                     var xlsRows = data;
@@ -120,7 +120,7 @@
                                         var stock_quantity = total_stock_quantity - addition_stock;
                                         var date = value.created_at == null ? " " : value.created_at;
                                         var new_stock_date = date.split(" ")[0];
-                                        var columns = [index+1, value.code, stock_quantity, addition_stock, value.quantity, new_stock_date, total_stock_quantity, parseInt(stock_used), value.stock, value.remark];
+                                        var columns = [index+1, value.code, stock_quantity, addition_stock, value.quantity, new_stock_date, total_stock_quantity, parseInt(stock_used), value.stock, value.remark, value.last_3_month];
                                         $.each(columns, function(ind, val) {
                                             innerRowData.push(val);
                                         });

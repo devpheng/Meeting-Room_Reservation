@@ -116,6 +116,32 @@ class StationeryController extends Controller
                                     `stationeries`.`code`
                                 order by
                                     `stationeries`.`id`");
+
+        for($i=1; $i<=3; $i++) {
+            $startDate = $now->year."-".($now->month-($i+1))."-20 00:00:00";
+            $endDate = $now->year."-".$now->month-$i."-20 00:00:00";
+            $previous[$i-1] = DB::select("select
+                `stationeries`.`id`,
+                `stationeries`.`code`,
+                sum(requests.quantity) as stock_used
+                from
+                `stationeries`
+                left join `requests` on `requests`.`stationery_id` = `stationeries`.`id` and `requests`.`created_at` BETWEEN '".$startDate."'
+                                            AND '".$endDate."' AND `requests`.`approved_at` IS NOT NULL
+                    group by
+                    `stationeries`.`code`
+                order by
+                    `stationeries`.`id`
+                ");
+        }
+
+        for($i=0; $i<count($requests); $i++) {
+            $previou1 = $previous[0][$i]->stock_used == null ? 0 : $previous[0][$i]->stock_used;
+            $previou2 = $previous[1][$i]->stock_used == null ? 0 : $previous[1][$i]->stock_used;
+            $previou3 = $previous[2][$i]->stock_used == null ? 0 : $previous[2][$i]->stock_used;
+            $requests[$i]->last_3_month = $previou1 . "," . $previou2 . "," . $previou3;
+        }
+
         return $requests;
     }
 }
