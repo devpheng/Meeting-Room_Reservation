@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Stationery;
 use App\Models\AdditionStock;
 use \App\Http\Requests\StationeryRequest;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class StationeryController extends Controller
 {
@@ -87,5 +89,33 @@ class StationeryController extends Controller
         } catch (\Exception $e) {
             return $e->getMessage();
         }
+    }
+
+    public function monthly()
+    {
+        $now = Carbon::now();
+        $startDate = $now->year."-".($now->month-1)."-20 00:00:00";
+        $endDate = $now->year."-".$now->month."-20 00:00:00";
+
+        $requests = DB::select("select
+                                    `stationeries`.`id`,
+                                    `stationeries`.`code`,
+                                    `stationeries`.`stock`,
+                                    `stationeries`.`quantity`,
+                                    `stationeries`.`remark`,
+                                    sum(requests.quantity) as stock_used,
+                                    `additions_stock`.`addition`,
+                                    `additions_stock`.`created_at`
+                                from
+                                    `stationeries`
+                                    left join `requests` on `requests`.`stationery_id` = `stationeries`.`id` and `requests`.`created_at` BETWEEN '".$startDate."'
+                                    AND '".$endDate."' AND `requests`.`approved_at` IS NOT NULL
+                                    left join `additions_stock` on `additions_stock`.`stationery_id` = `stationeries`.`id` AND `additions_stock`.`created_at` BETWEEN '".$startDate."'
+                                    AND '".$endDate."'
+                                group by
+                                    `stationeries`.`code`
+                                order by
+                                    `stationeries`.`id`");
+        return $requests;
     }
 }

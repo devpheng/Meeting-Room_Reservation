@@ -13,6 +13,7 @@
                     @endif
                     <div class="pt-4">
                         <a class="btn btn-success" style="color: white" href="{{ route('admin.stationery.create') }}">Add New</a>
+                        <a class="btn btn-primary" style="color: white" href="javascript:void(0)" id="btn-export-monthly">Export monthly report</a>
                     </div>
                 </div>
                 <div class="card-body">
@@ -76,21 +77,73 @@
         </div>
         <!-- /#event-modal -->
         @push('scripts')
-        
+            <script type="text/javascript" src="{{ asset('/assets/js/xlsx.full.min.js') }}"></script>
             <script src="{{ asset('/assets/js/datatables.min.js') }}"></script>
             <script>
                     jQuery(document).ready(function($) {
                         $('#stationery').DataTable();
 
 
-                        $('.btn-add').click(function(){
+                        $('body').on('click', '.btn-add', function(){
                             $('#stock-modal').modal({
                                 backdrop: 'static',
                                 keyboard: false
                             });
                             $('#stationery-id').val($(this).attr('data-id'));
                             $('#code').text($(this).attr('data-code'));
-                        })
+                        });
+
+
+                        $('#btn-export-monthly').on('click', function() {
+                            // var data = {
+                            //     'username': $("#keyword_type").val() == "username" ? ($("#keyword").val().length > 0 ? $("#keyword").val() : null) : null,
+                            //     'dateRange': $('input[name="date-range"]').val() == '' ? null : $('input[name="date-range"]').val()
+                            // }
+                            var data = {};
+                            $.getJSON('{{ route('admin.stationery.monthly') }}',
+                                data,
+                                function(data) {
+                                    var createXLSLFormatObj = [];
+
+                                    /* XLS Head Columns */
+                                    var xlsHeader = ["No.", "Description/Code", "Stock Quantity", "Addition Stock Quantity", "Quantity", "New Stock (Date)", "Total Stock Quantity", "Stock Used (Previous Month)", "Total Stock Remain", "Remark"];
+
+                                    /* XLS Rows Data */
+                                    var xlsRows = data;
+
+                                    createXLSLFormatObj.push(xlsHeader);
+                                    $.each(data, function(index, value) {
+                                        var innerRowData = [];
+                                        var stock_used = value.stock_used == null ? 0 : value.stock_used;
+                                        var total_stock_quantity = parseInt(value.stock) + parseInt(stock_used);
+                                        var addition_stock = value.addition == null ? 0 : value.addition;
+                                        var stock_quantity = total_stock_quantity - addition_stock;
+                                        var date = value.created_at == null ? " " : value.created_at;
+                                        var new_stock_date = date.split(" ")[0];
+                                        var columns = [index+1, value.code, stock_quantity, addition_stock, value.quantity, new_stock_date, total_stock_quantity, parseInt(stock_used), value.stock, value.remark];
+                                        $.each(columns, function(ind, val) {
+                                            innerRowData.push(val);
+                                        });
+                                        createXLSLFormatObj.push(innerRowData);
+                                    });
+
+
+                                    /* File Name */
+                                    var filename = "Monthly Stationery Usage.xlsx";
+
+                                    /* Sheet Name */
+                                    var ws_name = "Sheet1";
+
+                                    var wb = XLSX.utils.book_new(),
+                                    ws = XLSX.utils.aoa_to_sheet(createXLSLFormatObj);
+
+                                    /* Add worksheet to workbook */
+                                    XLSX.utils.book_append_sheet(wb, ws, ws_name);
+
+                                    /* Write workbook and Download */
+                                    XLSX.writeFile(wb, filename);
+                                });
+                        });
                     });
             </script>
         @endpush

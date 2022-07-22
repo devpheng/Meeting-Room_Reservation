@@ -84,6 +84,7 @@ Route::group(['prefix'=>'admin','as'=>'admin.'], function () {
         Route::get('/edit/{id}', [AdminStationeryController::class, 'edit'])->name('edit');
         Route::post('/update', [AdminStationeryController::class, 'update'])->name('update');
         Route::post('/add', [AdminStationeryController::class, 'add'])->name('add');
+        Route::get('/monthly', [AdminStationeryController::class, 'monthly'])->name('monthly');
     });
 
     Route::group(['prefix'=>'request','as'=>'request.'], function(){
