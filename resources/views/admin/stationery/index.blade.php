@@ -26,6 +26,7 @@
                                     <th>Quantity</th>
                                     <th>Total Stock Remain</th>
                                     <th>Remark</th>
+                                    <th>Add Stock Date</th>
                                     <th>ACTION</th>
                                 </tr>
                             </thead>
@@ -37,6 +38,7 @@
                                                 <td> {{ $stationery->quantity }}</td>
                                                 <td> {{ $stationery->stock }}</td>
                                                 <td> {{ $stationery->remark }}</td>
+                                                <td> {{ $stationery->AdditionStock->last() == null ? '' : $stationery->AdditionStock->last()->created_at }}</td>
                                                 <td>
                                                     <a class="btn btn-outline-success btn-sm btn-add" data-id="{{ $stationery->id }}" data-code="{{ $stationery->code }}">Add Stock</a>
                                                     <a href="{{ route('admin.stationery.edit', ['id' => $stationery->id]) }}" class="btn btn-outline-primary btn-sm btn-update"><i class="fa-solid fa-file-pen"></i>&nbsp; Edit</a>

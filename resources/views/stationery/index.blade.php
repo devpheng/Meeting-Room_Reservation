@@ -109,13 +109,14 @@
                 <div class="row">
                     <div class="col-8 offset-2">
                         <a class="btn btn-outline-primary mb-3" id="edit-profile">Edit Profile</a>
+                        <a class="btn btn-outline-success mb-3" href="{{ route('stationery.view') }}">View Requested</a>
                         <table class="table" id="stationery">
                             <thead>
                                 <tr>
                                     <th class="serial">#</th>
                                     <th>Code</th>
                                     <th>Quantity</th>
-                                    <th>Total Stock Remain</th>
+                                    <th>Total Stock</th>
                                     {{-- <th>Remark</th> --}}
                                     <th>ACTION</th>
                                 </tr>

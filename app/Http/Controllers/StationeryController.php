@@ -61,4 +61,13 @@ class StationeryController extends Controller
         return redirect()->route('stationery')->with('message','Request successful!');
        
     }
+
+    public function view(Request $request)
+    {
+        $ip = $request->ip();
+        $requests = RequestModel::where('ip_address', $ip)->orderBy('created_at', 'DESC')->get();
+        return  view('stationery.view', [
+            'requests' => $requests
+        ]);
+    }
 }

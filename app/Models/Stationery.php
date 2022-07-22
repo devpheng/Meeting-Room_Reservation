@@ -10,4 +10,9 @@ class Stationery extends Model
     use HasFactory;
 
     protected $fillable = ['code', 'quantity', 'stock', 'remark'];
+
+    public function AdditionStock()
+    {
+        return $this->hasMany('App\Models\AdditionStock');
+    }
 }

@@ -35,6 +35,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/stationery', [StationeryController::class, 'index'])->name('stationery');
 Route::post('/stationerys', [StationeryController::class, 'request'])->name('stationery.request');
+Route::get('/stationery/view', [StationeryController::class, 'view'])->name('stationery.view');
 
 Route::group(['prefix'=>'bookings','as'=>'booking.'], function(){
     Route::group(['prefix'=>'room','as'=>'room.'], function(){
