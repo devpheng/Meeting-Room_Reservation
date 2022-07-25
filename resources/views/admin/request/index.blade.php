@@ -21,6 +21,7 @@
                 <div class="card-body">
                     <div class="table-stats ov-h">
                         <a href="javascript:void(0)" class="btn btn-success mb-4" id="btn-export-daily">Export Daily Report</a>
+                        <a href="javascript:void(0)" class="btn btn-outline-success mb-4" id="btn-export-monthly">Export Monthly Report</a>
                         <table class="table" id="request">
                             <thead>
                                 <tr>
@@ -126,6 +127,51 @@
 
                                 /* File Name */
                                 var filename = "Daily Stationery Usage.xlsx";
+
+                                /* Sheet Name */
+                                var ws_name = "Sheet1";
+
+                                var wb = XLSX.utils.book_new(),
+                                ws = XLSX.utils.aoa_to_sheet(createXLSLFormatObj);
+
+                                /* Add worksheet to workbook */
+                                XLSX.utils.book_append_sheet(wb, ws, ws_name);
+
+                                /* Write workbook and Download */
+                                XLSX.writeFile(wb, filename);
+                            });
+                    });
+
+                    $('#btn-export-monthly').on('click', function() {
+                        // var data = {
+                        //     'username': $("#keyword_type").val() == "username" ? ($("#keyword").val().length > 0 ? $("#keyword").val() : null) : null,
+                        //     'dateRange': $('input[name="date-range"]').val() == '' ? null : $('input[name="date-range"]').val()
+                        // }
+                        var data = {};
+                        $.getJSON('{{ route('admin.request.monthly') }}',
+                            data,
+                            function(data) {
+                                var createXLSLFormatObj = [];
+
+                                /* XLS Head Columns */
+                                var xlsHeader = ["No.", "Department", "Description/Code", "Quantity"];
+
+                                /* XLS Rows Data */
+                                // var xlsRows = data.data.activities;
+
+                                createXLSLFormatObj.push(xlsHeader);
+                                $.each(data, function(index, value) {
+                                    var innerRowData = [];
+                                    var columns = [index+1, value.name, value.code, value.total];
+                                    $.each(columns, function(ind, val) {
+                                        innerRowData.push(val);
+                                    });
+                                    createXLSLFormatObj.push(innerRowData);
+                                });
+
+
+                                /* File Name */
+                                var filename = "Monthly Stationery Usage.xlsx";
 
                                 /* Sheet Name */
                                 var ws_name = "Sheet1";
