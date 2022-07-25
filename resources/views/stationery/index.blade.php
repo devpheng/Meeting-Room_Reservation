@@ -248,7 +248,7 @@
                         });
 
 
-                        $('.btn-request').click(function(){
+                        $('body').on('click', '.btn-request', function(){
                             $('#stock-modal').modal({
                                 backdrop: 'static',
                                 keyboard: false
@@ -259,7 +259,7 @@
                             $('#stock').val('');
                             $('#request_by').val(localStorage.getItem('name'));
                             $('#department_id').val(localStorage.getItem('department'));
-                        })
+                        });
                     });
             </script>
     </body>
