@@ -62,6 +62,25 @@ class RequestController extends Controller
         }
     }
 
+    public function delete($id)
+    {
+        try {
+            $request = RequestModel::findOrfail($id);
+
+            $stationery = Stationery::findOrFail($request->stationery_id);
+
+            $stationery->stock = $stationery->stock + $request->quantity;
+
+            $stationery->save();
+            
+            $request->delete();
+
+            return redirect()->route('admin.request.index')->with('message','Delete request successful!');
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
     public function daily()
     {
         $requests = DB::table('requests')

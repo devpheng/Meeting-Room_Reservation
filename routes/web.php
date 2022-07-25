@@ -92,6 +92,7 @@ Route::group(['prefix'=>'admin','as'=>'admin.'], function () {
         Route::get('/', [AdminRequestController::class, 'index'])->name('index');
         Route::get('/cancel/{id}/{stock}', [AdminRequestController::class, 'cancel'])->name('cancel');
         Route::get('/approve/{id}', [AdminRequestController::class, 'approve'])->name('approve');
+        Route::get('/delete/{id}', [AdminRequestController::class, 'delete'])->name('delete');
         Route::get('/daily', [AdminRequestController::class, 'daily'])->name('daily');
         Route::get('/monthly', [AdminRequestController::class, 'monthly'])->name('monthly');
         // Route::post('/store', [AdminStationeryController::class, 'store'])->name('store');

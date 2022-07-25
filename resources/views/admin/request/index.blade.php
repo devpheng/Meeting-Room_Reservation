@@ -75,7 +75,8 @@
                                                         <a href="{{ route('admin.request.approve', ['id' => $request->id]) }}" class="btn btn-outline-success">Approved</a>
                                                         <a href="{{ route('admin.request.cancel', ['id' => $request->id, 'stock' => $request->quantity]) }}" class="btn btn-outline-danger">Cancel</a>
                                                     @elseif ($request->approved_at != '')
-                                                        <p class="text-success">Approved</p> 
+                                                        <p class="text-success d-inline">Approved</p> 
+                                                        <a href="{{ route('admin.request.delete', ['id' => $request->id]) }}" class="btn btn-danger ml-1">Delete</a>
                                                     @elseif ($request->deleted_at != '')
                                                         <p class="text-danger">Cancelled</p>
                                                     @endif
