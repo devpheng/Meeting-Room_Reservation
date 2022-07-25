@@ -94,8 +94,16 @@ class StationeryController extends Controller
     public function monthly()
     {
         $now = Carbon::now();
-        $startDate = $now->year."-".($now->month-1)."-20 00:00:00";
-        $endDate = $now->year."-".$now->month."-20 00:00:00";
+        if($now->day>=20) {
+            $startDate = $now->year."-".$now->month."-20 00:00:00";
+            $endDate = $now->year."-".($now->month+1)."-20 00:00:00";
+            $addDate = $now->year."-".($now->month+1)."-15 23:59:59";
+        } else {
+            $startDate = $now->year."-".($now->month-1)."-20 00:00:00";
+            $endDate = $now->year."-".$now->month."-20 00:00:00";
+            $addDate = $now->year."-".($now->month)."-15 23:59:59";
+        }
+        
 
         $requests = DB::select("select
                                     `stationeries`.`id`,
@@ -111,15 +119,22 @@ class StationeryController extends Controller
                                     left join `requests` on `requests`.`stationery_id` = `stationeries`.`id` and `requests`.`created_at` BETWEEN '".$startDate."'
                                     AND '".$endDate."' AND `requests`.`approved_at` IS NOT NULL
                                     left join `additions_stock` on `additions_stock`.`stationery_id` = `stationeries`.`id` AND `additions_stock`.`created_at` BETWEEN '".$startDate."'
-                                    AND '".$endDate."'
+                                    AND '".$addDate."'
                                 group by
                                     `stationeries`.`code`
                                 order by
                                     `stationeries`.`id`");
 
         for($i=1; $i<=3; $i++) {
-            $startDate = $now->year."-".($now->month-($i+1))."-20 00:00:00";
-            $endDate = $now->year."-".$now->month-$i."-20 00:00:00";
+
+            if($now->day>=20) {
+                $startDate = $now->year."-".($now->month-$i)."-20 00:00:00";
+                $endDate = $now->year."-".$now->month."-20 00:00:00";
+            } else {
+                $startDate = $now->year."-".($now->month-($i+1))."-20 00:00:00";
+                $endDate = $now->year."-".($now->month-$i)."-20 00:00:00";
+            }
+
             $previous[$i-1] = DB::select("select
                 `stationeries`.`id`,
                 `stationeries`.`code`,
