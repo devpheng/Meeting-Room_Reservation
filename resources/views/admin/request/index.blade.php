@@ -1,5 +1,8 @@
 .@extends('admin.layouts.app')
-<link rel="stylesheet" type="text/css" href="{{ asset('/assets/css/datatables.min.css') }}"/>
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('/assets/npm/date-time-picker/jquery.datetimepicker.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('/assets/css/datatables.min.css') }}"/>
+@endpush
 @section('content')
 <!-- Booking -->
 <div class="Booking">
@@ -20,8 +23,30 @@
                 </div>
                 <div class="card-body">
                     <div class="table-stats ov-h">
-                        <a href="javascript:void(0)" class="btn btn-success mb-4" id="btn-export-daily">Export Daily Report</a>
-                        <a href="javascript:void(0)" class="btn btn-outline-success mb-4" id="btn-export-monthly">Export Monthly Report</a>
+                        
+                        <div class="py-3">
+                            <div class="row">
+                                <div class="col-2">
+                                    <label>START DATE </label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon"><i class="fa fa-calendar-days"></i></div>
+                                        <input type="text" name="start-date" class="form-control" data-field="start-date" id="start-date">
+                                        <button type="button" class="btn btn-outline-secondary btn-sm d-none" id="clear"><i class="fa-solid fa-xmark"></i></button>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <label>END DATE </label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon"><i class="fa fa-calendar-days"></i></div>
+                                        <input type="text" name="end-date" class="form-control" data-field="end-date" id="end-date">
+                                        <button type="button" class="btn btn-outline-secondary btn-sm d-none" id="clear"><i class="fa-solid fa-xmark"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <a href="javascript:void(0)" class="btn btn-outline-success my-2" id="btn-export-monthly">Export Monthly Report</a>
+                            <a href="javascript:void(0)" class="btn btn-success my-3" id="btn-export-daily">Export Daily Report</a>
+                        </div>
                         <table class="table" id="request">
                             <thead>
                                 <tr>
@@ -95,7 +120,23 @@
             <script src="{{ asset('/assets/js/datatables.min.js') }}"></script>
             <script>
                 jQuery(document).ready(function($) {
+                    $('#end-date').datetimepicker({
+                        timepicker:false,
+                        format:'Y-m-d',
+                        formatDate:'Y-m-d'
+                    });
+
+                    $('#start-date').datetimepicker({
+                        timepicker:false,
+                        format:'Y-m-d',
+                        formatDate:'Y-m-d'
+                    });
+   
+
+    
                     $('#request').DataTable();
+
+                    
 
                     $('#btn-export-daily').on('click', function() {
                         // var data = {
@@ -147,7 +188,10 @@
                         //     'username': $("#keyword_type").val() == "username" ? ($("#keyword").val().length > 0 ? $("#keyword").val() : null) : null,
                         //     'dateRange': $('input[name="date-range"]').val() == '' ? null : $('input[name="date-range"]').val()
                         // }
-                        var data = {};
+                        var data = {
+                            start: $('#start-date').val(),
+                            end: $('#end-date').val()
+                        };
                         $.getJSON('{{ route('admin.request.monthly') }}',
                             data,
                             function(data) {
@@ -187,6 +231,7 @@
                             });
                     });
                 });
+
             </script>
         @endpush
 @endsection

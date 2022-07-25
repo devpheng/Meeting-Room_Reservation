@@ -77,11 +77,10 @@ class RequestController extends Controller
         return $requests;
     }
 
-    public function monthly()
+    public function monthly(Request $request)
     {
-        $now = Carbon::now();
-        $startDate = $now->year."-".($now->month-1)."-20 00:00:00";
-        $endDate = $now->year."-".$now->month."-20 00:00:00";
+        $startDate = $request->start . " 00:00:00";
+        $endDate = $request->end . " 23:59:59";
         $requests = DB::table('requests')
                     ->select('stationeries.code', 'departments.name', DB::raw('sum(requests.quantity) as total'), 'requests.department_id', 'requests.stationery_id')
                     ->join('departments', 'departments.id', '=', 'requests.department_id')
