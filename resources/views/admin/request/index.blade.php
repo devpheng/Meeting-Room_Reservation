@@ -2,6 +2,11 @@
 @push('styles')
     <link rel="stylesheet" href="{{ asset('/assets/npm/date-time-picker/jquery.datetimepicker.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('/assets/css/datatables.min.css') }}"/>
+    <style>
+        .zoom:hover {
+            transform: scale(1.5); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+        }
+    </style>
 @endpush
 @section('content')
 <!-- Booking -->
@@ -55,6 +60,7 @@
                                     <th>IP Address</th>
                                     <th>Department</th>
                                     <th>Item</th>
+                                    <th>Photo</th>
                                     <th>Quantity</th>
                                     <th>Request Date</th>
                                     <th>ACTION</th>
@@ -68,6 +74,13 @@
                                                 <td> {{ $request->ip_address }}</td>
                                                 <td> {{ $request->department->name }}</td>
                                                 <td> {{ $request->stationery->code }}</td>
+                                                <td>
+                                                    @if ($request->stationery->image == null)
+                                                        <img src="{{ asset('storage/files/images/no.jpg') }}" style="max-width: 120px; transition: transform .2s;" class="zoom"/>
+                                                    @else
+                                                        <img src="{{ asset('storage/files/'.$request->stationery->image) }}" style="max-width: 120px; transition: transform .2s;" class="zoom"/>
+                                                    @endif
+                                                </td>
                                                 <td> {{ $request->quantity . " " . $request->stationery->quantity}}</td>
                                                 <td> {{ $request->created_at }} </td>
                                                 <td>

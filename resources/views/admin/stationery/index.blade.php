@@ -1,5 +1,10 @@
 .@extends('admin.layouts.app')
 <link rel="stylesheet" type="text/css" href="{{ asset('/assets/css/datatables.min.css') }}"/>
+<style>
+    .zoom:hover {
+        transform: scale(1.5); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+    }
+</style>
 @section('content')
 <!-- Booking -->
 <div class="Booking">
@@ -23,6 +28,7 @@
                                 <tr>
                                     <th class="serial">#</th>
                                     <th>Code</th>
+                                    <th>Photo</th>
                                     <th>Quantity</th>
                                     <th>Total Stock Remain</th>
                                     <th>Remark</th>
@@ -35,6 +41,13 @@
                                             <tr>
                                                 <td class="serial">{{ $key + 1 }}</td>
                                                 <td> {{ $stationery->code }}</td>
+                                                <td>
+                                                    @if ($stationery->image == null)
+                                                        <img src="{{ asset('storage/files/images/no.jpg') }}" style="max-width: 120px; transition: transform .2s;" class="zoom"/>
+                                                    @else
+                                                        <img src="{{ asset('storage/files/'.$stationery->image) }}" style="max-width: 120px; transition: transform .2s;" class="zoom"/>
+                                                    @endif
+                                                </td>
                                                 <td> {{ $stationery->quantity }}</td>
                                                 <td> {{ $stationery->stock }}</td>
                                                 <td> {{ $stationery->remark }}</td>

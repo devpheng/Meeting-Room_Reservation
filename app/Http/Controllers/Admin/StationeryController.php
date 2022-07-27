@@ -35,11 +35,19 @@ class StationeryController extends Controller
     {
         $stationery = Stationery::where('code', $request->code)->first();
         if(!$stationery){
+            $image = null;
+            if($request->file(('image')) != null) {
+                $path = $request->file('image')->store('public/files/images');
+                $name = explode('/', $path);
+                $image = "images/" . end($name);
+            }
+            
             $stationery = Stationery::create([
                 'code' => $request->code,
                 'quantity' => $request->quantity,
                 'stock' => $request->stock,
-                'remark' => $request->remark
+                'remark' => $request->remark,
+                'image' => $image
             ]);
         } else {
             return view('admin.stationery.create', ['exist' => 'Stationery already exist']);
@@ -64,6 +72,25 @@ class StationeryController extends Controller
     {
         try {
             $stationery = Stationery::findOrfail($request->id);
+
+            if($request->file('image') != null) {        
+                $path = 'storage/files/';
+       
+                if($stationery->image != '' && $stationery->image != null){
+                    // $file_old = $path.$stationery->image;
+                    // unlink($file_old);
+    
+                    $path = $request->file('image')->store('public/files/images');
+                    $name = explode('/', $path);
+                    $stationery->image = "images/" . end($name);
+                    dd($request->file('image'));
+                } else {
+                    $path = $request->file('image')->store('public/files/images');
+                    $name = explode('/', $path);
+                    $stationery->image = "images/" . end($name);
+                }
+            }
+
             $stationery->code = $request->code;
             $stationery->quantity = $request->quantity;
             $stationery->remark = $request->remark;

@@ -19,7 +19,6 @@
         <style>
             body {
                 font-family: 'Nunito', sans-serif;
-                background: #f1f2f7;
             }
             .card{
                 background: transparent;
@@ -87,14 +86,24 @@
                     background-position: 0% 50%;
                 }
             }
+            .zoom:hover {
+                transform: scale(2.5); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+                box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+            }
+            thead tr {
+                background: lightblue;
+            }
+            table.dataTable tbody th, table.dataTable tbody td {
+                vertical-align: middle;
+            }
         </style>
     </head>
     <body class="antialiased">
          <!-- Content -->
         <div class="content">
-            <h1 class="text-center py-5">
+            <h1 class="text-center">
                 <img src="{{ asset('/images/sbc_logo.png') }}" width="75"/>
-                Shinhan Stationery Request
+                Online Stationery Request
             </h1>
             <!-- Animated -->
             <div class="animated fadeIn py-5">
@@ -115,6 +124,7 @@
                                 <tr>
                                     <th class="serial">#</th>
                                     <th>Code</th>
+                                    <th>Photo</th>
                                     <th>Quantity</th>
                                     <th>Total Stock</th>
                                     {{-- <th>Remark</th> --}}
@@ -126,6 +136,13 @@
                                             <tr>
                                                 <td class="serial">{{ $key + 1 }}</td>
                                                 <td> {{ $stationery->code }}</td>
+                                                <td>
+                                                    @if ($stationery->image == null)
+                                                        <img src="{{ asset('storage/files/images/no.jpg') }}" style="width: auto; height:100px; transition: transform .2s;" class="zoom"/>
+                                                    @else
+                                                        <img src="{{ asset('storage/files/'.$stationery->image) }}" style="width: auto; height:100px transition: transform .2s;" class="zoom"/>
+                                                    @endif
+                                                </td>
                                                 <td> {{ $stationery->quantity }}</td>
                                                 <td> {{ $stationery->stock }}</td>
                                                 {{-- <td> {{ $stationery->remark }}</td> --}}
@@ -158,7 +175,7 @@
                         <div class="modal-body">
                             <input type="hidden" name="stationery_id" value="" id="stationery-id"/>
                             <label for="stock">Request amount</label>
-                            <input class="form-control" type="text" name="stock" value="0" id="stock"/>
+                            <input class="form-control" type="number" name="stock" value="0" id="stock"/>
                             <input class="form-control" type="hidden" name="request_by" id="request_by"/>
                             <input class="form-control" type="hidden" name="department_id" id="department_id"/>
                         </div>

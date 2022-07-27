@@ -3,7 +3,7 @@
 @section('content')
 <!-- Booking -->
 <div class="Booking">
-    <form id="update-room" action="{{ route('admin.stationery.update') }}" method="POST">
+    <form id="update-room" action="{{ route('admin.stationery.update') }}" method="POST" enctype="multipart/form-data">
     <input type="hidden" name="id" value="{{ $stationery->id }}" />
     @csrf
     <div class="row">
@@ -47,6 +47,23 @@
                                     <label for="stock" class=" form-control-label">Total Stock Remain</label>
                                     <input type="number" id="stock" name="stock" placeholder="Enter total stock remain" class="form-control" value="{{ $stationery->stock }}">
                                     @error('stock')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="image" class=" form-control-label">Photo</label>
+                                    <input type="file" id="image" name="image" class="form-control-file">
+                                    
+                                    @if ($stationery->image == null)
+                                        <img src="{{ asset('storage/files/images/no.jpg') }}" id="preview-image" class="img-thumbnail" style="max-width: 300px"/>
+                                    @else
+                                        <img src="{{ asset('storage/files/'.$stationery->image) }}" id="preview-image" class="img-thumbnail" style="max-width: 300px"/>
+                                    @endif
+                                    @error('image')
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -110,6 +127,16 @@
                         //     reader.readAsDataURL(this.files[0]); 
                         
                         // });
+
+                        $('#image').change(function(){
+                            
+                            let reader = new FileReader();
+                            reader.onload = (e) => { 
+                            $('#preview-image').attr('src', e.target.result); 
+                            }
+                            reader.readAsDataURL(this.files[0]); 
+                        
+                        });
                     })
             </script>
         @endpush

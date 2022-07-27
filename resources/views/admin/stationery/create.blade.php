@@ -3,7 +3,7 @@
 @section('content')
 <!-- Booking -->
 <div class="Booking">
-    <form id="update-room" action="{{ route('admin.stationery.store') }}" method="POST">
+    <form id="update-room" action="{{ route('admin.stationery.store') }}" method="POST" enctype="multipart/form-data">
     @csrf
     <div class="row">
         <div class="col-xl-12">
@@ -52,6 +52,18 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="image" class=" form-control-label">Photo</label>
+                                    <input type="file" id="image" name="image" class="form-control-file">
+                                    <img src="" id="preview-image" class="img-thumbnail" style="max-width: 300px"/>
+                                    @error('image')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
                         
                         
                         
@@ -92,6 +104,15 @@
         @push('scripts')
             <script>
                     jQuery(document).ready(function($) {
+                        $('#image').change(function(){
+                            
+                            let reader = new FileReader();
+                            reader.onload = (e) => { 
+                            $('#preview-image').attr('src', e.target.result); 
+                            }
+                            reader.readAsDataURL(this.files[0]); 
+                        
+                        });
                         // $('.btn-update').click(function(){
                         //     $('#room-update-modal').modal({
                         //         backdrop: 'static',

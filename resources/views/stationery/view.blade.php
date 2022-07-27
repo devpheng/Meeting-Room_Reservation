@@ -19,7 +19,6 @@
         <style>
             body {
                 font-family: 'Nunito', sans-serif;
-                background: #f1f2f7;
             }
             .card{
                 background: transparent;
@@ -87,14 +86,24 @@
                     background-position: 0% 50%;
                 }
             }
+            .zoom:hover {
+                transform: scale(2.5); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+                box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+            }
+            thead tr {
+                background: lightblue;
+            }
+            table.dataTable tbody th, table.dataTable tbody td {
+                vertical-align: middle;
+            }
         </style>
     </head>
     <body class="antialiased">
          <!-- Content -->
         <div class="content">
-            <h1 class="text-center py-5">
+            <h1 class="text-center">
                 <img src="{{ asset('/images/sbc_logo.png') }}" width="75"/>
-                Shinhan Stationery Request
+                Online Stationery Request
             </h1>
             <!-- Animated -->
             <div class="animated fadeIn py-5">
@@ -116,6 +125,7 @@
                                     <th>Request By</th>
                                     <th>Department</th>
                                     <th>Item</th>
+                                    <th>Photo</th>
                                     <th>Quantity</th>
                                     <th>Request Date</th>
                                     <th>ACTION</th>
@@ -128,6 +138,13 @@
                                                 <td> {{ $request->request_by }}</td>
                                                 <td> {{ $request->department->name }}</td>
                                                 <td> {{ $request->stationery->code }}</td>
+                                                <td>
+                                                    @if ($request->stationery->image == null)
+                                                        <img src="{{ asset('storage/files/images/no.jpg') }}" style="width: auto; height:100px; transition: transform .2s;" class="zoom"/>
+                                                    @else
+                                                        <img src="{{ asset('storage/files/'.$request->stationery->image) }}" style="width: auto; height:100px; transition: transform .2s;" class="zoom"/>
+                                                    @endif
+                                                </td>
                                                 <td> {{ $request->quantity . " " . $request->stationery->quantity}}</td>
                                                 <td> {{ $request->created_at }} </td>
                                                 <td>

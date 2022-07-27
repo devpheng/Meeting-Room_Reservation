@@ -9,7 +9,7 @@ class Stationery extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['code', 'quantity', 'stock', 'remark'];
+    protected $fillable = ['code', 'quantity', 'stock', 'remark', 'image'];
 
     public function AdditionStock()
     {
