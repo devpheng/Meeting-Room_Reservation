@@ -129,13 +129,16 @@
                                     createXLSLFormatObj.push(xlsHeader);
                                     $.each(data, function(index, value) {
                                         var innerRowData = [];
+                                        var new_request = value.new_request == null ? 0 : value.new_request;
+                                        var stock = value.stock == null ? 0 : value.stock;
+                                        var stock_remain = parseInt(stock) + parseInt(new_request);
                                         var stock_used = value.stock_used == null ? 0 : value.stock_used;
-                                        var total_stock_quantity = parseInt(value.stock) + parseInt(stock_used);
+                                        var total_stock_quantity = parseInt(stock_remain) + parseInt(stock_used);
                                         var addition_stock = value.addition == null ? 0 : value.addition;
                                         var stock_quantity = total_stock_quantity - addition_stock;
                                         var date = value.created_at == null ? " " : value.created_at;
                                         var new_stock_date = date.split(" ")[0];
-                                        var columns = [index+1, value.code, stock_quantity, addition_stock, value.quantity, new_stock_date, total_stock_quantity, parseInt(stock_used), value.stock, value.remark, value.last_3_month];
+                                        var columns = [index+1, value.code, stock_quantity, addition_stock, value.quantity, new_stock_date, total_stock_quantity, parseInt(stock_used), stock_remain, value.remark, value.last_3_month];
                                         $.each(columns, function(ind, val) {
                                             innerRowData.push(val);
                                         });
